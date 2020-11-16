@@ -16,7 +16,7 @@ export class BackendService {
 
   isLoggedIn(): boolean {
     const username = localStorage.getItem(this.usernameKey);
-    return username !== undefined;
+    return !!username;
   }
 
   getUsername(): string {

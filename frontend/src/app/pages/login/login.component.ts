@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {BackendService} from '../../services/backend.service';
 
 @Component({
@@ -8,7 +9,7 @@ import {BackendService} from '../../services/backend.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private backendService: BackendService) {
+  constructor(private backendService: BackendService, private router: Router) {
   }
 
   username = '';
@@ -16,8 +17,9 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  login(): void {
+  async login(): Promise<void> {
     this.backendService.login(this.username);
+    await this.router.navigateByUrl('student');
   }
 
 }
