@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+}
+
+.code {
+  text-align: initial;
+  height: available;
+  flex-grow: 1;
+}
+
+.headline {
+  font-size: 2rem;
+  font-weight: normal;
+  padding: 2%;
+  text-shadow: 3px 2px 30px rgba(0, 0, 0, 0.55);
+}
+
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+}
