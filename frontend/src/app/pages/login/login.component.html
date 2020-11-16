@@ -2,8 +2,8 @@
   <h1>Login</h1>
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
-    <input matInput>
+    <input matInput [(ngModel)]="username">
   </mat-form-field>
   <br>
-  <button color="primary" mat-raised-button>Login</button>
+  <button [disabled]="username.trim() === ''" color="primary" mat-raised-button (click)="login()">Login</button>
 </div>
