@@ -52,10 +52,10 @@ The teacher should have an overview of all his students and their code.
 
 ## UI mockups
 ### Student view
-![Student View](./figures/student_view.jpg)
+![Student View](figures/student_view.jpg)
 
 ### Teacher view
-![Teacher View](./figures/teacher_view.jpg)
+![Teacher View](figures/teacher_view.jpg)
 
 ## Implementation
 ### Frontend requirements
