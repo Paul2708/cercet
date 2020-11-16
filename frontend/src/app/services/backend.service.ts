@@ -23,4 +23,7 @@ export class BackendService {
     return localStorage.getItem(this.usernameKey);
   }
 
+  logout(): void {
+    localStorage.removeItem(this.usernameKey);
+  }
 }
