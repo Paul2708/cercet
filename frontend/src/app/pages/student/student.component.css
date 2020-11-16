@@ -1,5 +1,15 @@
 .container {
+  display: flex;
   text-align: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+}
+
+.code {
+  text-align: initial;
+  height: available;
+  flex-grow: 1;
 }
 
 .headline {

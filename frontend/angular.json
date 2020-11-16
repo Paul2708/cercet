@@ -20,13 +20,13 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
-              "src/favicon.ico",
-              "src/assets",
               {
                 "glob": "**/*",
-                "input": "node_modules/ngx-monaco-editor/assets/monaco",
+                "input": "./node_modules/ngx-monaco-editor/assets/monaco",
                 "output": "./assets/monaco/"
-              }
+              },
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
