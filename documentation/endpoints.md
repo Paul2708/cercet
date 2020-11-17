@@ -36,6 +36,7 @@ The uuid has to be used as `X-UID` header in following requests.
 The code execution will output any messages to the web socket that logged in (cf. Web Socket / Login) before.
 
 ## Web Socket endpoints
+The url for web socket communication is `ws://localhost:42069/ws`.
 Every message to the server will be encoded in *messages*.
 A message has the following format:
 ```json
