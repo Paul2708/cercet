@@ -16,7 +16,7 @@
   </div>
   <div class="code">
     <ngx-monaco-editor style="height: 100%" class="code-editor" [options]="options"
-                       [(ngModel)]="code"></ngx-monaco-editor>
+                       [(ngModel)]="code" (onInit)="initEditor($event)"></ngx-monaco-editor>
   </div>
   <div class="i-dont-know-how-to-name-this-container">
     <button [disabled]="output.trim() == ''" mat-button color="warn" (click)="clearOutput()">

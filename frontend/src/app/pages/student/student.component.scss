@@ -42,6 +42,15 @@
   overflow: auto;
 }
 
+::ng-deep .teacher-cursor {
+  background: red;
+  width: 2px !important;
+}
+
+::ng-deep .teacher-selection {
+  background: rgba(255, 0, 0, 0.4);
+}
+
 .headline {
   font-size: 2rem;
   font-weight: normal;

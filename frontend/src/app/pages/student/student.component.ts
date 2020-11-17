@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs';
 import {BackendService} from '../../services/backend.service';
+import IStandaloneCodeEditor = monaco.editor.IStandaloneCodeEditor;
 
 @Component({
   selector: 'app-student',
@@ -12,13 +12,14 @@ export class StudentComponent implements OnInit {
   username: string;
 
   options = {
-    theme: 'vs-dark',
+    theme: 'vs-light',
     language: 'java'
   };
   code = 'public class Main {}';
   output = 'Hello World';
 
   currentTemplate = 'public class Main {}';
+  private editor: monaco.editor.IStandaloneCodeEditor;
 
   constructor(private backendService: BackendService, private router: Router) {
   }
@@ -38,5 +39,9 @@ export class StudentComponent implements OnInit {
 
   resetTemplate(): void {
     this.code = this.currentTemplate;
+  }
+
+  initEditor(editor: IStandaloneCodeEditor): void {
+    this.editor = editor;
   }
 }
