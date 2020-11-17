@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+}
+
+.code {
+  height: 40%;
+  text-align: initial;
+  flex-grow: 1;
+}
+
+.controls {
+  position: relative;
+  text-align: initial;
+  padding-left: 55px;
+}
+
+.output {
+  font-style: italic;
+}
+
+.terminal {
+  flex-grow: 1;
+  height: 10%;
+  overflow: auto;
+  text-align: initial;
+  margin: 30px;
+
+  span {
+    margin: 10px;
+  }
+}
+
+.output-headline {
+  font-size: 1.5rem;
+}
+
+.headline {
+  font-size: 2rem;
+  font-weight: normal;
+  padding: 1%;
+  text-shadow: 3px 2px 30px rgba(0, 0, 0, 0.55);
+}
+
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+}
+
+::ng-deep .code-editor {
+  .editor-container {
+    height: calc(100vh - 100px);
+  }
+}
+
+.button {
+  margin: 10px;
+}

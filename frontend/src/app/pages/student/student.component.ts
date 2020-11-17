@@ -5,10 +5,16 @@ import {BackendService} from '../../services/backend.service';
 @Component({
   selector: 'app-student',
   templateUrl: './student.component.html',
-  styleUrls: ['./student.component.css']
+  styleUrls: ['./student.component.scss']
 })
 export class StudentComponent implements OnInit {
   username: string;
+
+  options = {
+    theme: 'vs-light',
+    language: 'java'
+  };
+  code = 'public class Main {}';
 
   constructor(private backendService: BackendService, private router: Router) {
   }

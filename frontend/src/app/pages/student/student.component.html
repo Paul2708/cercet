@@ -4,7 +4,23 @@
 </button>
 <div class="container">
   <h1 class="headline">Welcome {{ username }}</h1>
+  <div class="controls">
+    <button class="button" mat-raised-button color="primary">
+      <mat-icon>play_arrow</mat-icon>
+      Run
+    </button>
+    <button class="button" mat-raised-button>
+      <mat-icon>delete</mat-icon>
+      Reset
+    </button>
+  </div>
   <div class="code">
-    <app-code></app-code>
+    <ngx-monaco-editor style="height: 100%" class="code-editor" [options]="options"
+                       [(ngModel)]="code"></ngx-monaco-editor>
+  </div>
+  <div class="terminal">
+    <p class="output-headline">Output</p>
+    <span class="output">Hello World!>
+    <br><br><br><br><br><br><br><br><br><br><br>test<br>test<br><br><br><br><br><br>test</span>
   </div>
 </div>
