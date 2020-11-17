@@ -26,4 +26,8 @@ export class BackendService {
   logout(): void {
     localStorage.removeItem(this.usernameKey);
   }
+
+  isTeacher(): boolean {
+    return !!localStorage.getItem('teacher');
+  }
 }
