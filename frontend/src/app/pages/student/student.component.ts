@@ -39,6 +39,7 @@ export class StudentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.backendService.disconnect();
   }
 
   async logout(): Promise<void> {

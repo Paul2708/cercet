@@ -62,6 +62,10 @@ export class BackendService {
       };
     });
   }
+
+  disconnect(): void {
+    this.socket.close();
+  }
 }
 
 export interface PatchData {
