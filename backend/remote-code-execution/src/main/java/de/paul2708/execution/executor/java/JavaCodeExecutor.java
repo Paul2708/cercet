@@ -77,8 +77,6 @@ public final class JavaCodeExecutor implements CodeExecutor {
                     .map(Path::toFile)
                     .forEach(File::delete);
         }
-
-        service.shutdown();
     }
 
     private void inheritIO(InputStream src, Consumer<String> consumer) {
