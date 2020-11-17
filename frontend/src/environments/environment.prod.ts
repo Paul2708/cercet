@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  socketUrl: 'ws://localhost:8080'
 };
