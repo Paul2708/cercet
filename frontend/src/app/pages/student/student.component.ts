@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
 import {BackendService} from '../../services/backend.service';
 
 @Component({
@@ -11,10 +12,13 @@ export class StudentComponent implements OnInit {
   username: string;
 
   options = {
-    theme: 'vs-light',
+    theme: 'vs-dark',
     language: 'java'
   };
   code = 'public class Main {}';
+  output = 'Hello World';
+
+  currentTemplate = 'public class Main {}';
 
   constructor(private backendService: BackendService, private router: Router) {
   }
@@ -28,4 +32,11 @@ export class StudentComponent implements OnInit {
     await this.router.navigateByUrl('login');
   }
 
+  clearOutput(): void {
+    this.output = '';
+  }
+
+  resetTemplate(): void {
+    this.code = this.currentTemplate;
+  }
 }

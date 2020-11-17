@@ -25,17 +25,21 @@
 .terminal {
   flex-grow: 1;
   height: 10%;
-  overflow: auto;
   text-align: initial;
-  margin: 30px;
+  margin: 20px;
 
   span {
     margin: 10px;
   }
 }
 
-.output-headline {
-  font-size: 1.5rem;
+.i-dont-know-how-to-name-this-container {
+  text-align: initial;
+  padding: 0 20px;
+}
+
+.code-out {
+  overflow: auto;
 }
 
 .headline {

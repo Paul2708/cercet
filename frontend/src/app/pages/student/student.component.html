@@ -9,7 +9,7 @@
       <mat-icon>play_arrow</mat-icon>
       Run
     </button>
-    <button class="button" mat-raised-button>
+    <button class="button" mat-raised-button (click)="resetTemplate()">
       <mat-icon>delete</mat-icon>
       Reset
     </button>
@@ -18,9 +18,19 @@
     <ngx-monaco-editor style="height: 100%" class="code-editor" [options]="options"
                        [(ngModel)]="code"></ngx-monaco-editor>
   </div>
-  <div class="terminal">
-    <p class="output-headline">Output</p>
-    <span class="output">Hello World!>
-    <br><br><br><br><br><br><br><br><br><br><br>test<br>test<br><br><br><br><br><br>test</span>
+  <div class="i-dont-know-how-to-name-this-container">
+    <button [disabled]="output.trim() == ''" mat-button color="warn" (click)="clearOutput()">
+      <mat-icon>delete</mat-icon>
+      Clear Output
+    </button>
   </div>
+  <mat-card class="terminal">
+    <mat-card-title>Output</mat-card-title>
+    <mat-card-content>
+      <div class="code-out">
+        <span
+          class="output">{{ output }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>
