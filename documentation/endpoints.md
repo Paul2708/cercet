@@ -6,6 +6,7 @@ General settings for every request:
 - the default port is `42069`
 
 ### Login
+- **Method**: `POST`
 - **Endpoint**: `login/`
 - no `X-UID` header required
 - **body**:
@@ -23,6 +24,7 @@ General settings for every request:
 The uuid has to be used as `X-UID` header in following requests.
 
 ### Code execution
+- **Method**: `POST`
 - **Endpoint**: `execution/`
 - **body**:
 ```json
@@ -34,6 +36,32 @@ The uuid has to be used as `X-UID` header in following requests.
 - **response**: ignored
 
 The code execution will output any messages to the web socket that logged in (cf. Web Socket / Login) before.
+
+### Templates
+#### Set template
+- **Method**: `POST`
+- **Endpoint**: `template/`
+- **body**:
+```json
+{
+  "template": "<code>"
+}
+```
+`template` is Java source code. You may have to escape `"`.
+- **response**: ignored
+- the `UID` has to refer to a teacher, otherwise `401 Unauthorized`
+
+#### Get template
+- **Method**: `GET`
+- **Endpoint**: `template/`
+- **body**: ignored
+- **response**:
+```json
+{
+  "code": "<code>"
+}
+```
+`code` is Java source code. You may have to escape `"`.
 
 ## Web Socket endpoints
 The url for web socket communication is `ws://localhost:42069/ws`.
