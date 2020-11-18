@@ -1,6 +1,10 @@
 package de.paul2708.server.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.javalin.websocket.WsContext;
+
+import java.util.UUID;
 
 /**
  * Class description.
@@ -9,9 +13,12 @@ import io.javalin.websocket.WsContext;
  */
 public class User {
 
+    private UUID uuid;
+
     private final String name;
     private final UserRole role;
 
+    @JsonIgnore
     private WsContext socket;
 
     public User(String name, UserRole role) {
@@ -19,8 +26,16 @@ public class User {
         this.role = role;
     }
 
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public void setSocket(WsContext socket) {
         this.socket = socket;
+    }
+
+    public UUID getUuid() {
+        return uuid;
     }
 
     public UserRole getRole() {

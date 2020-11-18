@@ -1,9 +1,7 @@
 package de.paul2708.server.user;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class description.
@@ -26,7 +24,14 @@ public class UserRegistry {
         UUID uuid = UUID.randomUUID();
 
         users.put(uuid, user);
+        user.setUuid(uuid);
 
         return uuid;
+    }
+
+    public List<User> findAllStudents() {
+        return users.values().stream()
+                .filter(user -> user.getRole() == UserRole.STUDENT)
+                .collect(Collectors.toList());
     }
 }

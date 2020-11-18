@@ -9,6 +9,7 @@ import de.paul2708.server.security.DefaultAccessManager;
 import de.paul2708.server.template.CreateTemplateEndpoint;
 import de.paul2708.server.template.GetTemplateEndpoint;
 import de.paul2708.server.template.Template;
+import de.paul2708.server.user.GetUsersEndpoint;
 import de.paul2708.server.user.UserRegistry;
 import de.paul2708.server.user.UserRole;
 import de.paul2708.server.ws.MessageListener;
@@ -19,6 +20,7 @@ import io.javalin.core.JavalinConfig;
 
 import java.util.List;
 
+import static de.paul2708.server.user.UserRole.TEACHER;
 import static io.javalin.core.security.SecurityUtil.roles;
 
 public final class JavalinServer {
@@ -60,6 +62,10 @@ public final class JavalinServer {
                 roles(UserRole.STUDENT));
         javalin.post("/template",
                 new CreateTemplateEndpoint(template),
+                roles(UserRole.TEACHER));
+
+        javalin.get("/user",
+                new GetUsersEndpoint(userRegistry),
                 roles(UserRole.TEACHER));
 
         // Websocket endpoints

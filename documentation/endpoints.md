@@ -40,6 +40,27 @@ The uuid has to be used as `X-UID` header in following requests.
 
 The code execution will output any messages to the web socket that logged in (cf. Web Socket / Login) before.
 
+### Users
+- **Method**: `GET`
+- **Endpoint**: `user/`
+- **body**: ignored
+- **response**
+```json
+[
+  {
+    "uuid": "a0d5c36c-bb1f-4e3b-9ba3-b9dddd9e07f5",
+    "role": "{STUDENT | TEACHER}"
+  },
+  {
+    "uuid": "a0d5c36c-bb1f-4e3b-9ba3-b9d4f59e07f5",
+    "role": "{STUDENT | TEACHER}"
+  }
+]
+```
+Array of students including uuid and role.
+
+- the `UID` has to refer to a teacher, otherwise `401 Unauthorized`
+
 ### Templates
 #### Set template
 - **Method**: `POST`
