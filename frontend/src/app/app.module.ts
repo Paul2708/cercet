@@ -2,6 +2,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule} from '@angular/forms';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -13,10 +14,11 @@ import {MonacoEditorModule} from 'ngx-monaco-editor';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {EditorComponent} from './components/editor/editor.component';
 import {LoginComponent} from './pages/login/login.component';
 import {StudentComponent} from './pages/student/student.component';
 import {TeacherComponent} from './pages/teacher/teacher.component';
-import { EditorComponent } from './components/editor/editor.component';
+import { StudentteachereditorComponent } from './components/studentteachereditor/studentteachereditor.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { EditorComponent } from './components/editor/editor.component';
     LoginComponent,
     StudentComponent,
     TeacherComponent,
-    EditorComponent
+    EditorComponent,
+    StudentteachereditorComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +40,7 @@ import { EditorComponent } from './components/editor/editor.component';
     MatCardModule,
     FormsModule,
     FlexLayoutModule,
+    MatBottomSheetModule,
     MonacoEditorModule.forRoot(),
     HttpClientModule
   ],

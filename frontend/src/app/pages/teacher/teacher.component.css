@@ -1,0 +1,9 @@
+.card {
+  text-align: center;
+  width: 150px;
+  height: 150px;
+}
+
+.view-button {
+  margin-top: 50px !important;
+}
