@@ -6,11 +6,15 @@ import de.paul2708.server.execution.ExecutionEndpoint;
 import de.paul2708.server.login.LoginMessageListener;
 import de.paul2708.server.login.LoginEndpoint;
 import de.paul2708.server.security.DefaultAccessManager;
+import de.paul2708.server.template.CreateTemplateEndpoint;
+import de.paul2708.server.template.GetTemplateEndpoint;
+import de.paul2708.server.template.Template;
 import de.paul2708.server.user.UserRegistry;
 import de.paul2708.server.user.UserRole;
 import de.paul2708.server.ws.MessageListener;
 import de.paul2708.server.ws.MessageProcessing;
 import io.javalin.Javalin;
+import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.core.JavalinConfig;
 
 import java.util.List;
@@ -31,6 +35,9 @@ public final class JavalinServer {
 
     public void configureAndStart() {
         UserRegistry userRegistry = new UserRegistry();
+        Template template = new Template("public class Main {\n  " +
+                "public static void main(String[] args) {\n    " +
+                "System.out.println(\"Hello World!\");\n  }\n}");
 
         // Security
         config.accessManager(new DefaultAccessManager(userRegistry));
@@ -47,6 +54,13 @@ public final class JavalinServer {
         javalin.post("/execution",
                 new ExecutionEndpoint(new ExecutionRunner(new JavaCodeExecutor())),
                 roles(UserRole.STUDENT));
+
+        javalin.get("/template",
+                new GetTemplateEndpoint(template),
+                roles(UserRole.STUDENT));
+        javalin.post("/template",
+                new CreateTemplateEndpoint(template),
+                roles(UserRole.TEACHER));
 
         // Websocket endpoints
         List<MessageListener> listeners = List.of(
