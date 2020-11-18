@@ -1,5 +1,7 @@
 package de.paul2708.server.execution;
 
+import de.paul2708.execution.executor.CodeExecutor;
+import de.paul2708.execution.executor.java.JavaCodeExecutor;
 import de.paul2708.execution.runner.ExecutionRunner;
 import de.paul2708.server.security.DefaultAccessManager;
 import de.paul2708.server.user.User;
@@ -21,7 +23,8 @@ public final class ExecutionEndpoint implements Handler {
 
         ExecutionRequest request = ctx.bodyValidator(ExecutionRequest.class).get();
 
-        runner.run(request.getCode(), new WebSocketOutputObserver(user.getSocket()));
+        CodeExecutor executor = new JavaCodeExecutor(request.getCode(), new WebSocketOutputObserver(user.getSocket()));
+        runner.run(executor);
 
         ctx.status(201).result("Alles top");
     }

@@ -19,68 +19,91 @@ import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public final class JavaCodeExecutor implements CodeExecutor {
+public final class JavaCodeExecutor extends CodeExecutor {
 
     private static final String DIR_PATH = "./code/";
     private static final String MAIN_CLASS = "Main";
 
-    private final ExecutorService service;
+    private final ExecutorService ioService;
 
-    public JavaCodeExecutor(ExecutorService service) {
-        this.service = service;
-    }
+    private Process process;
 
-    public JavaCodeExecutor() {
-        this(Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()));
+    private final UUID identifier;
+    private Path directory;
+
+    public JavaCodeExecutor(String code, OutputObserver observer) {
+        super(code, observer);
+
+        this.ioService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        this.identifier = UUID.randomUUID();
     }
 
     @Override
-    public void execute(String code, OutputObserver observer) throws IOException {
-        UUID identifier = UUID.randomUUID();
-
+    public void execute() throws Exception {
         // Prepare directory and files
-        Path directory = Files.createDirectories(Paths.get(DIR_PATH + "/" + identifier + "/"));
+        this.directory = Files.createDirectories(Paths.get(DIR_PATH + "/" + identifier + "/"));
 
         Path codeFile = Files.createFile(Paths.get(String.format("%s%s/%s.java", DIR_PATH, identifier, MAIN_CLASS)));
-        Files.write(codeFile, code.getBytes(StandardCharsets.UTF_8));
+        Files.write(codeFile, getCode().getBytes(StandardCharsets.UTF_8));
 
         // Compile
-        Process compileProcess = new ProcessBuilder("javac", String.format("%s.java", MAIN_CLASS))
+        getObserver().observeOutput("Compiling...", OutputType.INFO);
+
+        this.process = new ProcessBuilder("javac", String.format("%s.java", MAIN_CLASS))
                 .directory(directory.toFile())
                 .start();
 
-        inheritIO(compileProcess.getErrorStream(), line -> observer.observeOutput(line, OutputType.ERROR));
+        inheritIO(process.getErrorStream(), line -> getObserver().observeOutput(line, OutputType.ERROR));
 
         try {
-            compileProcess.waitFor();
+            int exitStatus = process.waitFor();
+
+            if (exitStatus != 0) {
+                return;
+            }
         } catch (InterruptedException e) {
             // Ignored, handled in ExecutionRunner
         }
+
+        getObserver().observeOutput("Compiled.", OutputType.INFO);
+        getObserver().observeOutput("Executing...", OutputType.INFO);
 
         // Run
-        Process runProcess = new ProcessBuilder("java", MAIN_CLASS)
+        this.process = new ProcessBuilder("java", MAIN_CLASS)
                 .directory(directory.toFile())
                 .start();
 
-        inheritIO(runProcess.getErrorStream(), line -> observer.observeOutput(line, OutputType.ERROR));
-        inheritIO(runProcess.getInputStream(), line -> observer.observeOutput(line, OutputType.NORMAL));
+        inheritIO(process.getErrorStream(), line -> getObserver().observeOutput(line, OutputType.ERROR));
+        inheritIO(process.getInputStream(), line -> getObserver().observeOutput(line, OutputType.NORMAL));
 
         try {
-            runProcess.waitFor();
+            process.waitFor();
         } catch (InterruptedException e) {
             // Ignored, handled in ExecutionRunner
         }
+    }
 
-        // Delete directory
+    @Override
+    public void destroy() {
+        process.destroy();
+    }
+
+    @Override
+    public void clean() {
         try (Stream<Path> walk = Files.walk(directory)) {
             walk.sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
                     .forEach(File::delete);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        ioService.shutdownNow();
     }
 
     private void inheritIO(InputStream src, Consumer<String> consumer) {
-        service.submit(() -> {
+        ioService.submit(() -> {
             try (Scanner scanner = new Scanner(src)) {
                 while (scanner.hasNextLine()) {
                     consumer.accept(scanner.nextLine());

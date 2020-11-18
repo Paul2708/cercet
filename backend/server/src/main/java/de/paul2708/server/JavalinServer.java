@@ -52,7 +52,7 @@ public final class JavalinServer {
                 new LoginEndpoint(userRegistry),
                 roles(UserRole.ANYONE));
         javalin.post("/execution",
-                new ExecutionEndpoint(new ExecutionRunner(new JavaCodeExecutor())),
+                new ExecutionEndpoint(new ExecutionRunner()),
                 roles(UserRole.STUDENT));
 
         javalin.get("/template",
