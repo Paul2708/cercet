@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
 
   async login(): Promise<void> {
     try {
+      await this.backendService.checkWSConnection();
       await this.backendService.login(this.username);
     } catch (e) {
     }

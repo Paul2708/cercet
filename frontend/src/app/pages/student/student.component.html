@@ -26,15 +26,13 @@
   </div>
   <mat-card class="terminal">
     <mat-card-title>Output</mat-card-title>
-    <mat-card-content>
-      <div class="code-out">
-        <div
-          *ngIf="output.length !== 0">
-          <p *ngFor="let line of output"
-             [class.internal-error]="line.type === 'INTERNAL_ERROR'"
-             [class.info]="line.type === 'INFO'"
-             [class.error]="line.type === 'ERROR'">{{ line.output }}</p>
-        </div>
+    <mat-card-content class="terminal-content">
+      <div class="code-out"
+           *ngIf="output.length !== 0">
+        <p *ngFor="let line of output" class="code-line"
+           [class.internal-error]="line.type === 'INTERNAL_ERROR'"
+           [class.info]="line.type === 'INFO'"
+           [class.error]="line.type === 'ERROR'">{{ line.output }}</p>
       </div>
     </mat-card-content>
   </mat-card>

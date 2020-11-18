@@ -19,14 +19,18 @@
 }
 
 .terminal {
-  flex-grow: 1;
-  height: 10%;
   text-align: initial;
   margin: 20px;
-
+  height: 30%;
   span {
     margin: 10px;
   }
+}
+
+.terminal-content {
+  padding-top: 5px;
+  padding-left: 40px;
+  height: 90%;
 }
 
 .i-dont-know-how-to-name-this-container {
@@ -35,7 +39,13 @@
 }
 
 .code-out {
-  overflow: auto;
+  height: 100%;
+  position: relative;
+  overflow-y: auto;
+}
+
+.code-line {
+  position: relative;
 }
 
 ::ng-deep .teacher-cursor {

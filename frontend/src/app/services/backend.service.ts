@@ -11,18 +11,21 @@ export class BackendService {
 
   private readonly changeListener$: Subject<PatchData>;
   private usernameKey = 'username';
-  private readonly socket: WebSocket;
+  private socket: WebSocket;
   private uuid: string;
   private readonly outputListener$: Subject<OutputData>;
 
   constructor(private httpClient: HttpClient, private router: Router) {
-    this.socket = BackendService.initializeWebSocket();
+    this.socket = this.initializeWebSocket();
     this.changeListener$ = new Subject<PatchData>();
     this.outputListener$ = new Subject<OutputData>();
+  }
 
-    this.socket.onmessage = (event) => {
+  private initializeWebSocket(): WebSocket {
+    const socket = new WebSocket(environment.socketUrl);
+    socket.onmessage = (event) => {
       if (event.data === 'Login done :D') {
-        router.navigateByUrl('student');
+        this.router.navigateByUrl('student');
         return;
       }
       const message: WebSocketMessage = JSON.parse(event.data);
@@ -37,10 +40,7 @@ export class BackendService {
         console.log(message);
       }
     };
-  }
-
-  private static initializeWebSocket(): WebSocket {
-    return new WebSocket(environment.socketUrl);
+    return socket;
   }
 
   async login(username: string): Promise<void> {
@@ -113,7 +113,7 @@ export class BackendService {
   }
 
   async getTemplate(): Promise<string> {
-    const { code } = await this.httpClient.get(environment.serverUrl + 'template', {
+    const {code} = await this.httpClient.get(environment.serverUrl + 'template', {
       headers: {
         'X-UID': this.uuid
       }
@@ -121,6 +121,16 @@ export class BackendService {
     return code;
   }
 
+  async checkWSConnection(): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.socket.CLOSED) {
+        this.socket = this.initializeWebSocket();
+        this.socket.onopen = () => {
+          resolve();
+        };
+      }
+    });
+  }
 }
 
 export interface OutputData {
