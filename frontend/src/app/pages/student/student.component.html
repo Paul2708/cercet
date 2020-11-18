@@ -2,38 +2,7 @@
   <mat-icon>logout</mat-icon>
   Log Out
 </button>
-<div class="container">
-  <h1 class="headline">Welcome {{ username }}</h1>
-  <div class="controls">
-    <button class="button" mat-raised-button (click)="runCode()" color="primary">
-      <mat-icon>play_arrow</mat-icon>
-      Run
-    </button>
-    <button class="button" mat-raised-button (click)="resetTemplate()">
-      <mat-icon>delete</mat-icon>
-      Reset
-    </button>
-  </div>
-  <div class="code">
-    <ngx-monaco-editor style="height: 100%" class="code-editor" [options]="options"
-                       [(ngModel)]="code" (onInit)="initEditor($event)"></ngx-monaco-editor>
-  </div>
-  <div class="i-dont-know-how-to-name-this-container">
-    <button [disabled]="output.length === 0" mat-button color="warn" (click)="clearOutput()">
-      <mat-icon>delete</mat-icon>
-      Clear Output
-    </button>
-  </div>
-  <mat-card class="terminal">
-    <mat-card-title>Output</mat-card-title>
-    <mat-card-content class="terminal-content">
-      <div class="code-out"
-           *ngIf="output.length !== 0">
-        <p *ngFor="let line of output" class="code-line"
-           [class.internal-error]="line.type === 'INTERNAL_ERROR'"
-           [class.info]="line.type === 'INFO'"
-           [class.error]="line.type === 'ERROR'">{{ line.output }}</p>
-      </div>
-    </mat-card-content>
-  </mat-card>
+<div class="container" fxLayout="column">
+  <h1 fxFlex="5%" class="headline">Welcome {{ username }}</h1>
+  <app-editor fxFlex="95%"></app-editor>
 </div>

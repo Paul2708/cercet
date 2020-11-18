@@ -1,60 +1,7 @@
 .container {
-  display: flex;
   text-align: center;
   height: 100%;
   width: 100%;
-  flex-direction: column;
-}
-
-.code {
-  height: 40%;
-  text-align: initial;
-  flex-grow: 1;
-}
-
-.controls {
-  position: relative;
-  text-align: initial;
-  padding-left: 55px;
-}
-
-.terminal {
-  text-align: initial;
-  margin: 20px;
-  height: 30%;
-  span {
-    margin: 10px;
-  }
-}
-
-.terminal-content {
-  padding-top: 5px;
-  padding-left: 40px;
-  height: 90%;
-}
-
-.i-dont-know-how-to-name-this-container {
-  text-align: initial;
-  padding: 0 20px;
-}
-
-.code-out {
-  height: 100%;
-  position: relative;
-  overflow-y: auto;
-}
-
-.code-line {
-  position: relative;
-}
-
-::ng-deep .teacher-cursor {
-  background: red;
-  width: 2px !important;
-}
-
-::ng-deep .teacher-selection {
-  background: rgba(255, 0, 0, 0.4);
 }
 
 .headline {
@@ -68,32 +15,4 @@
   position: absolute;
   top: 20px;
   right: 50px;
-}
-
-::ng-deep .code-editor {
-  .editor-container {
-    height: calc(100vh - 100px);
-  }
-}
-
-.button {
-  margin: 10px;
-}
-
-// Output formats
-.internal-error {
-  font-style: normal;
-  font-weight: bold;
-  color: darkred;
-}
-
-.error {
-  font-style: normal;
-  font-weight: normal;
-  color: red;
-}
-
-.info {
-  font-style: italic;
-  font-weight: lighter;
 }
