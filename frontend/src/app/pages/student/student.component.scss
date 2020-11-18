@@ -18,10 +18,6 @@
   padding-left: 55px;
 }
 
-.output {
-  font-style: italic;
-}
-
 .terminal {
   flex-grow: 1;
   height: 10%;
@@ -72,4 +68,22 @@
 
 .button {
   margin: 10px;
+}
+
+// Output formats
+.internal-error {
+  font-style: normal;
+  font-weight: bold;
+  color: darkred;
+}
+
+.error {
+  font-style: normal;
+  font-weight: normal;
+  color: red;
+}
+
+.info {
+  font-style: italic;
+  font-weight: lighter;
 }

@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit {
       await this.backendService.login(this.username);
     } catch (e) {
     }
-    await this.router.navigateByUrl('student');
   }
 
 }

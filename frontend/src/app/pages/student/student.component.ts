@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 import {createPatch, applyPatch} from 'diff';
 import {Subscription} from 'rxjs';
-import {BackendService} from '../../services/backend.service';
+import {BackendService, OutputData} from '../../services/backend.service';
 import IStandaloneCodeEditor = monaco.editor.IStandaloneCodeEditor;
 
 @Component({
@@ -17,28 +17,40 @@ export class StudentComponent implements OnInit, OnDestroy {
     theme: 'vs-light',
     language: 'java'
   };
-  code = 'public class Main {}';
-  output = 'Hello World';
+  code = '';
+  output: OutputData[] = [];
 
-  currentTemplate = 'public class Main {}';
+  currentTemplate: string;
   private editor: monaco.editor.IStandaloneCodeEditor;
-  private oldCode = this.code;
+  private oldCode: string;
   private interval = 200;
-  private subscription: Subscription;
+  private changeSubscription: Subscription;
+  private outputSubscription: Subscription;
 
   constructor(private backendService: BackendService, private router: Router) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.username = this.backendService.getUsername();
+    this.currentTemplate = await this.backendService.getTemplate();
+    this.code = this.currentTemplate;
+    this.oldCode = this.currentTemplate;
+
     setInterval(() => this.checkDiff(), this.interval);
-    this.subscription = this.backendService.changeListener().subscribe(value => {
+
+    this.changeSubscription = this.backendService.changeListener().subscribe(value => {
       this.code = applyPatch(this.code, value.patch);
+    });
+
+    this.outputSubscription = this.backendService.outputListener().subscribe(value => {
+      this.output.push(value);
+      console.log('Receiving output!');
     });
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.changeSubscription.unsubscribe();
+    this.outputSubscription.unsubscribe();
     this.backendService.disconnect();
   }
 
@@ -48,7 +60,7 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   clearOutput(): void {
-    this.output = '';
+    this.output = [];
   }
 
   resetTemplate(): void {
@@ -66,5 +78,10 @@ export class StudentComponent implements OnInit, OnDestroy {
     const patch = createPatch('Main.java', this.oldCode, this.code);
     this.oldCode = this.code;
     this.backendService.sendPatch(patch);
+  }
+
+  async runCode(): Promise<void> {
+    this.clearOutput();
+    await this.backendService.execute(this.code);
   }
 }

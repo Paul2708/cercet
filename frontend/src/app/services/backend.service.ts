@@ -1,5 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
 import {Observable, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 
@@ -12,18 +13,28 @@ export class BackendService {
   private usernameKey = 'username';
   private readonly socket: WebSocket;
   private uuid: string;
+  private readonly outputListener$: Subject<OutputData>;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private router: Router) {
     this.socket = BackendService.initializeWebSocket();
-    this.changeListener$ = new Subject();
+    this.changeListener$ = new Subject<PatchData>();
+    this.outputListener$ = new Subject<OutputData>();
 
     this.socket.onmessage = (event) => {
+      if (event.data === 'Login done :D') {
+        router.navigateByUrl('student');
+        return;
+      }
       const message: WebSocketMessage = JSON.parse(event.data);
       if (message.message === 'patch') {
         if (!environment.production) {
           console.log('Receiving patch!');
         }
         this.changeListener$.next(message.data);
+      } else if (message.type && message.output) {
+        this.outputListener$.next(message as OutputData);
+      } else {
+        console.log(message);
       }
     };
   }
@@ -39,6 +50,15 @@ export class BackendService {
     }).toPromise() as any;
 
     this.uuid = uuid;
+    this.socket.send(JSON.stringify({
+      message: 'login',
+      data: {
+        uid: this.uuid
+      }
+    }));
+    if (!environment.production) {
+      console.log('Logged in with uuid ' + uuid);
+    }
   }
 
   isLoggedIn(): boolean {
@@ -63,7 +83,6 @@ export class BackendService {
       name: this.getUsername(),
       patch
     };
-    console.log(JSON.stringify(data));
     if (!this.socket) {
       return;
     }
@@ -74,14 +93,46 @@ export class BackendService {
     return this.changeListener$;
   }
 
+  outputListener(): Observable<OutputData> {
+    return this.outputListener$;
+  }
+
   disconnect(): void {
     this.socket.close();
   }
+
+  async execute(code: string): Promise<void> {
+    await this.httpClient.post(environment.serverUrl + 'execution', {
+      code
+    }, {
+      headers: {
+        'X-UID': this.uuid
+      },
+      responseType: 'text'
+    }).toPromise();
+  }
+
+  async getTemplate(): Promise<string> {
+    const { code } = await this.httpClient.get(environment.serverUrl + 'template', {
+      headers: {
+        'X-UID': this.uuid
+      }
+    }).toPromise() as any;
+    return code;
+  }
+
+}
+
+export interface OutputData {
+  output: string;
+  type: string;
 }
 
 export interface WebSocketMessage {
   message: string;
   data: any;
+  type?: string;
+  output?: string;
 }
 
 export interface PatchData {
