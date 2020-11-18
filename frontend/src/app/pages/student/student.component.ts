@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Router} from '@angular/router';
 import {createPatch, applyPatch} from 'diff';
 import {Subscription} from 'rxjs';
@@ -17,7 +17,7 @@ export class StudentComponent implements OnInit, OnDestroy {
     theme: 'vs-light',
     language: 'java'
   };
-  code = '';
+  @Input() code = '';
   output: OutputData[] = [];
 
   currentTemplate: string;

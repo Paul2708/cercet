@@ -14,6 +14,7 @@ export class BackendService {
   private socket: WebSocket;
   private uuid: string;
   private readonly outputListener$: Subject<OutputData>;
+  private isStudent = true;
 
   constructor(private httpClient: HttpClient, private router: Router) {
     this.socket = this.initializeWebSocket();
@@ -25,7 +26,7 @@ export class BackendService {
     const socket = new WebSocket(environment.socketUrl);
     socket.onmessage = (event) => {
       if (event.data === 'Login done :D') {
-        this.router.navigateByUrl('student');
+        this.router.navigateByUrl(this.isStudent ? 'student' : 'teacher');
         return;
       }
       const message: WebSocketMessage = JSON.parse(event.data);
@@ -44,6 +45,7 @@ export class BackendService {
   }
 
   async login(username: string): Promise<void> {
+    this.isStudent = username !== 'Paul Hoger';
     localStorage.setItem(this.usernameKey, username);
     const {uuid} = await this.httpClient.post(environment.serverUrl + 'login', {
       name: username
