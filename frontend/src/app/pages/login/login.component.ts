@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {BackendService} from '../../services/backend.service';
 
 @Component({
   selector: 'app-login',
@@ -18,8 +17,13 @@ export class LoginComponent implements OnInit {
   }
 
   async login(): Promise<void> {
-    this.backendService.login(this.username);
+    try {
+      await this.backendService.login(this.username);
+    } catch (e) {
+    }
     await this.router.navigateByUrl('student');
   }
 
 }
+
+import {BackendService} from '../../services/backend.service';

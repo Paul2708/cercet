@@ -1,5 +1,6 @@
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 
 @Injectable({
@@ -7,24 +8,42 @@ import {environment} from '../../environments/environment';
 })
 export class BackendService {
 
-  constructor() {
-    this.socket = BackendService.initializeWebSocket();
-  }
-
+  private readonly changeListener$: Subject<PatchData>;
   private usernameKey = 'username';
   private readonly socket: WebSocket;
+  private uuid: string;
+
+  constructor(private httpClient: HttpClient) {
+    this.socket = BackendService.initializeWebSocket();
+    this.changeListener$ = new Subject();
+
+    this.socket.onmessage = (event) => {
+      const message: WebSocketMessage = JSON.parse(event.data);
+      if (message.message === 'patch') {
+        if (!environment.production) {
+          console.log('Receiving patch!');
+        }
+        this.changeListener$.next(message.data);
+      }
+    };
+  }
 
   private static initializeWebSocket(): WebSocket {
     return new WebSocket(environment.socketUrl);
   }
 
-  login(username: string): void {
+  async login(username: string): Promise<void> {
     localStorage.setItem(this.usernameKey, username);
+    const {uuid} = await this.httpClient.post(environment.serverUrl + 'login', {
+      name: username
+    }).toPromise() as any;
+
+    this.uuid = uuid;
   }
 
   isLoggedIn(): boolean {
     const username = localStorage.getItem(this.usernameKey);
-    return !!username;
+    return !!username && !!this.uuid;
   }
 
   getUsername(): string {
@@ -52,20 +71,17 @@ export class BackendService {
   }
 
   changeListener(): Observable<PatchData> {
-    return new Observable<PatchData>(observer => {
-      this.socket.onmessage = (event) => {
-        const patchData: PatchData = JSON.parse(event.data);
-        if (!environment.production) {
-          console.log('Receiving patch!');
-        }
-        observer.next(patchData);
-      };
-    });
+    return this.changeListener$;
   }
 
   disconnect(): void {
     this.socket.close();
   }
+}
+
+export interface WebSocketMessage {
+  message: string;
+  data: any;
 }
 
 export interface PatchData {

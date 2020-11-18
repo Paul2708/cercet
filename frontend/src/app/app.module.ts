@@ -1,3 +1,4 @@
+import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
@@ -32,7 +33,8 @@ import {TeacherComponent} from './pages/teacher/teacher.component';
     MatIconModule,
     MatCardModule,
     FormsModule,
-    MonacoEditorModule.forRoot()
+    MonacoEditorModule.forRoot(),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
