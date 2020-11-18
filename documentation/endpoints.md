@@ -6,7 +6,7 @@ General settings for every request:
 - the default port is `42069`
 
 ### Login
-- **Endpoint**: `login/student`
+- **Endpoint**: `login/`
 - no `X-UID` header required
 - **body**:
 ```json

@@ -41,7 +41,7 @@ public final class JavalinServer {
         });
 
         // REST endpoints
-        javalin.post("/login/student",
+        javalin.post("/login",
                 new LoginEndpoint(userRegistry),
                 roles(UserRole.ANYONE));
         javalin.post("/execution",
