@@ -18,10 +18,13 @@ General settings for every request:
 - **response**
 ```json
 {
-  "uuid": "a0d5c36c-bb1f-4e3b-9ba3-b9dddd9e07f5"
+  "uuid": "a0d5c36c-bb1f-4e3b-9ba3-b9dddd9e07f5",
+  "role": "{STUDENT | TEACHER}"
 }
 ```
 The uuid has to be used as `X-UID` header in following requests.
+
+`role` can be `STUDENT` or `TEACHER`.
 
 ### Code execution
 - **Method**: `POST`

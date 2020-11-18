@@ -26,7 +26,7 @@ public class LoginEndpoint implements Handler {
 
         UUID uuid = userRegistry.register(user);
 
-        context.json(new LoginResponse(uuid));
+        context.json(new LoginResponse(uuid, user.getRole()));
 
         System.out.println(information);
     }
