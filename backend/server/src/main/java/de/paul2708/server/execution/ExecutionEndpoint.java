@@ -7,11 +7,11 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 
-public final class ExecutionHandler implements Handler {
+public final class ExecutionEndpoint implements Handler {
 
     private final ExecutionRunner runner;
 
-    public ExecutionHandler(ExecutionRunner runner) {
+    public ExecutionEndpoint(ExecutionRunner runner) {
         this.runner = runner;
     }
 

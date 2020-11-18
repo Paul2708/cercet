@@ -2,9 +2,9 @@ package de.paul2708.server;
 
 import de.paul2708.execution.executor.java.JavaCodeExecutor;
 import de.paul2708.execution.runner.ExecutionRunner;
-import de.paul2708.server.execution.ExecutionHandler;
+import de.paul2708.server.execution.ExecutionEndpoint;
 import de.paul2708.server.login.LoginMessageListener;
-import de.paul2708.server.login.StudentLoginHandler;
+import de.paul2708.server.login.LoginEndpoint;
 import de.paul2708.server.security.DefaultAccessManager;
 import de.paul2708.server.user.UserRegistry;
 import de.paul2708.server.user.UserRole;
@@ -42,10 +42,10 @@ public final class JavalinServer {
 
         // REST endpoints
         javalin.post("/login/student",
-                new StudentLoginHandler(userRegistry),
+                new LoginEndpoint(userRegistry),
                 roles(UserRole.ANYONE));
         javalin.post("/execution",
-                new ExecutionHandler(new ExecutionRunner(new JavaCodeExecutor())),
+                new ExecutionEndpoint(new ExecutionRunner(new JavaCodeExecutor())),
                 roles(UserRole.STUDENT));
 
         // Websocket endpoints

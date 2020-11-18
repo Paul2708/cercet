@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class StudentLoginHandler implements Handler {
+public class LoginEndpoint implements Handler {
 
     private final UserRegistry userRegistry;
 
-    public StudentLoginHandler(UserRegistry userRegistry) {
+    public LoginEndpoint(UserRegistry userRegistry) {
         this.userRegistry = userRegistry;
     }
 
