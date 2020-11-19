@@ -8,10 +8,14 @@
       <mat-icon>delete</mat-icon>
       Reset
     </button>
+    <button *ngIf="showCopyButton" class="button" mat-raised-button (click)="copyCode.emit(this.code)">
+      <mat-icon>content_copy</mat-icon>
+      Copy
+    </button>
   </div>
   <div class="code" [fxFlex]="enableRun === true ? '60%' : '95%'">
     <ngx-monaco-editor style="height: 100%" class="code-editor" [options]="options"
-                       [(ngModel)]="code" (onInit)="initEditor($event)"></ngx-monaco-editor>
+                       [(ngModel)]="code" (ngModelChange)="codeChange.emit($event)" (onInit)="initEditor($event)"></ngx-monaco-editor>
   </div>
   <div *ngIf="enableRun === true" fxFlex="5%" class="i-dont-know-how-to-name-this-container">
     <button [disabled]="output.length === 0" mat-button color="warn" (click)="clearOutput()">

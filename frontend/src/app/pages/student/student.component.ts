@@ -1,9 +1,6 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {createPatch, applyPatch} from 'diff';
-import {Subscription} from 'rxjs';
-import {BackendService, OutputData} from '../../services/backend.service';
-import IStandaloneCodeEditor = monaco.editor.IStandaloneCodeEditor;
+import {BackendService} from '../../services/backend.service';
 
 @Component({
   selector: 'app-student',

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy, Output, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
 import {applyPatch, createPatch} from 'diff';
 import {Subscription} from 'rxjs';
@@ -19,6 +19,9 @@ export class EditorComponent implements OnInit, OnDestroy {
   @Input() sendPatches = true;
   @Input() code = '';
   @Input() enableRun = true;
+  @Input() showCopyButton = false;
+  @Output() copyCode = new EventEmitter();
+  @Output() codeChange = new EventEmitter();
   output: OutputData[] = [];
 
   currentTemplate: string;

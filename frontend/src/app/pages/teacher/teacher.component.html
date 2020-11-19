@@ -1,3 +1,7 @@
+<button color="warn" class="logout-button" (click)="logout()" mat-raised-button>
+  <mat-icon>logout</mat-icon>
+  Log Out
+</button>
 <div fxLayout="row" fxLayoutAlign="space-between">
   <mat-card class="card" *ngFor="let student of students">
     <mat-card-title>{{ student.name }}</mat-card-title>

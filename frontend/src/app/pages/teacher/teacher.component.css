@@ -7,3 +7,9 @@
 .view-button {
   margin-top: 50px !important;
 }
+
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+}

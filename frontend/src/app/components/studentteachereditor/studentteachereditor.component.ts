@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
+import {MAT_BOTTOM_SHEET_DATA} from '@angular/material/bottom-sheet';
+import {Student} from '../../interfaces/student';
 
 @Component({
   selector: 'app-studentteachereditor',
@@ -7,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StudentteachereditorComponent implements OnInit {
 
-  constructor() { }
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public student: Student) {
+  }
 
   ngOnInit(): void {
   }
