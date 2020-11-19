@@ -1,6 +1,6 @@
 <div fxLayout="column" class="root">
   <div fxFlex="5%" class="controls">
-    <button class="button" mat-raised-button (click)="runCode()" color="primary">
+    <button *ngIf="enableRun === true" class="button" mat-raised-button (click)="runCode()" color="primary">
       <mat-icon>play_arrow</mat-icon>
       Run
     </button>
@@ -9,17 +9,17 @@
       Reset
     </button>
   </div>
-  <div class="code" fxFlex="60%">
+  <div class="code" [fxFlex]="enableRun === true ? '60%' : '95%'">
     <ngx-monaco-editor style="height: 100%" class="code-editor" [options]="options"
                        [(ngModel)]="code" (onInit)="initEditor($event)"></ngx-monaco-editor>
   </div>
-  <div fxFlex="5%" class="i-dont-know-how-to-name-this-container">
+  <div *ngIf="enableRun === true" fxFlex="5%" class="i-dont-know-how-to-name-this-container">
     <button [disabled]="output.length === 0" mat-button color="warn" (click)="clearOutput()">
       <mat-icon>delete</mat-icon>
       Clear Output
     </button>
   </div>
-  <mat-card class="terminal" fxFlex="30%">
+  <mat-card *ngIf="enableRun === true" class="terminal" fxFlex="30%">
     <mat-card-title>Output</mat-card-title>
     <mat-card-content class="terminal-content">
       <div class="code-out"

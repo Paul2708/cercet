@@ -20,6 +20,9 @@ export class LoginComponent implements OnInit {
     try {
       await this.backendService.checkWSConnection();
       await this.backendService.login(this.username);
+
+      const route = this.backendService.isTeacher() ? 'teacher' : 'student';
+      await this.router.navigateByUrl(route);
     } catch (e) {
     }
   }

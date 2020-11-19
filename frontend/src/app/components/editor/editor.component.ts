@@ -16,7 +16,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     theme: 'vs-light',
     language: 'java'
   };
+  @Input() sendPatches = true;
   @Input() code = '';
+  @Input() enableRun = true;
   output: OutputData[] = [];
 
   currentTemplate: string;
@@ -37,6 +39,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     setInterval(() => this.checkDiff(), this.interval);
 
     this.changeSubscription = this.backendService.changeListener().subscribe(value => {
+      if (!this.sendPatches) {
+        return;
+      }
       this.code = applyPatch(this.code, value.patch);
     });
 
@@ -65,6 +70,10 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   private checkDiff(): void {
+    if (!this.sendPatches) {
+      return;
+    }
+
     if (this.code === this.oldCode) {
       return;
     }

@@ -24,7 +24,9 @@ export class TeacherComponent implements OnInit {
   }
 
   openStudentEditor(student: Student): void {
-    this.bottomSheet.open(StudentteachereditorComponent);
+    this.bottomSheet.open(StudentteachereditorComponent, {
+      panelClass: 'custom-size'
+    });
   }
 
 }
