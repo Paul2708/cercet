@@ -4,13 +4,20 @@
       <mat-icon>play_arrow</mat-icon>
       Run
     </button>
-    <button class="button" mat-raised-button (click)="resetTemplate()">
+    <button color="primary" *ngIf="showSetTemplateButton" class="button" mat-raised-button (click)="setTemplateButtonClick.emit(code)">
+      <mat-icon>done</mat-icon>
+    </button>
+    <button *ngIf="showResetButton === true" class="button" mat-raised-button (click)="resetTemplate()">
       <mat-icon>delete</mat-icon>
       Reset
     </button>
     <button *ngIf="showCopyButton" class="button" mat-raised-button (click)="copyCode.emit(this.code)">
       <mat-icon>content_copy</mat-icon>
       Copy
+    </button>
+    <button *ngIf="showTemplateButton" class="button" mat-raised-button (click)="templateButtonClick.emit()">
+      <mat-icon>code</mat-icon>
+      Set Template
     </button>
   </div>
   <div class="code" [fxFlex]="enableRun === true ? '60%' : '95%'">

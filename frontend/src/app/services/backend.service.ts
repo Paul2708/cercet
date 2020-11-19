@@ -133,6 +133,18 @@ export class BackendService {
       }
     });
   }
+
+  async setTemplate(code: string): Promise<boolean> {
+    return await this.httpClient.post(environment.serverUrl + 'template', {
+        template: code
+      },
+      {
+        headers: {
+          'X-UID': this.uuid
+        },
+        responseType: 'text'
+      }).toPromise() === 'alles geklappt';
+  }
 }
 
 export interface OutputData {

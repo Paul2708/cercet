@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {Router} from '@angular/router';
+import {SelectTemplateComponent} from '../../components/select-template/select-template.component';
 import {StudentteachereditorComponent} from '../../components/studentteachereditor/studentteachereditor.component';
 import {Student} from '../../interfaces/student';
 import {BackendService} from '../../services/backend.service';
@@ -41,4 +42,9 @@ export class TeacherComponent implements OnInit {
     await this.router.navigateByUrl('login');
   }
 
+  openTemplateEditor(): void {
+    this.bottomSheet.open(SelectTemplateComponent, {
+      panelClass: 'template-editor-size'
+    });
+  }
 }
