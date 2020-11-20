@@ -28,6 +28,12 @@ public class UserRegistry {
                 .findAny();
     }
 
+    public List<User> findAllStudents() {
+        return users.values().stream()
+                .filter(user -> user.getRole() == UserRole.STUDENT)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
     public UUID register(User user) {
         UUID uuid = UUID.randomUUID();
 

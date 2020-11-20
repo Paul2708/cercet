@@ -11,6 +11,7 @@ import de.paul2708.server.template.Template;
 import de.paul2708.server.user.GetUsersEndpoint;
 import de.paul2708.server.user.UserRegistry;
 import de.paul2708.server.user.UserRole;
+import de.paul2708.server.ws.Broadcaster;
 import de.paul2708.server.ws.message.MessageListener;
 import de.paul2708.server.ws.message.MessageProcessing;
 import de.paul2708.server.ws.event.CloseListener;
@@ -38,6 +39,7 @@ public final class JavalinServer {
 
     public void configureAndStart() {
         UserRegistry userRegistry = new UserRegistry();
+        Broadcaster broadcaster = new Broadcaster(userRegistry);
         Template template = new Template("public class Main {\n  " +
                 "public static void main(String[] args) {\n    " +
                 "System.out.println(\"Hello World!\");\n  }\n}");
@@ -71,12 +73,12 @@ public final class JavalinServer {
 
         // Websocket endpoints
         List<MessageListener> listeners = List.of(
-                new LoginMessageListener(userRegistry)
+                new LoginMessageListener(userRegistry, broadcaster)
         );
         MessageProcessing messageProcessing = new MessageProcessing(listeners);
 
         EventListener connectListener = new ConnectListener();
-        EventListener closeListener = new CloseListener(userRegistry);
+        EventListener closeListener = new CloseListener(userRegistry, broadcaster);
         EventListener errorListener = new ErrorListener();
 
         // TODO: Check if web socket sends header. If so, the login is no longer necessary.

@@ -2,6 +2,8 @@ package de.paul2708.server.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.javalin.websocket.WsContext;
 
 import java.util.UUID;
@@ -24,6 +26,10 @@ public class User {
     public User(String name, UserRole role) {
         this.name = name;
         this.role = role;
+    }
+
+    public void send(Object data) {
+        socket.send(data);
     }
 
     public boolean hasSameSocket(WsContext context) {
