@@ -10,15 +10,21 @@ import de.paul2708.server.template.CreateTemplateEndpoint;
 import de.paul2708.server.template.GetTemplateEndpoint;
 import de.paul2708.server.template.Template;
 import de.paul2708.server.user.GetUsersEndpoint;
+import de.paul2708.server.user.User;
 import de.paul2708.server.user.UserRegistry;
 import de.paul2708.server.user.UserRole;
 import de.paul2708.server.ws.MessageListener;
 import de.paul2708.server.ws.MessageProcessing;
+import de.paul2708.server.ws.event.CloseListener;
+import de.paul2708.server.ws.event.ConnectListener;
+import de.paul2708.server.ws.event.ErrorListener;
+import de.paul2708.server.ws.event.EventListener;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.core.JavalinConfig;
 
 import java.util.List;
+import java.util.Optional;
 
 import static de.paul2708.server.user.UserRole.TEACHER;
 import static io.javalin.core.security.SecurityUtil.roles;
@@ -74,19 +80,17 @@ public final class JavalinServer {
         );
         MessageProcessing messageProcessing = new MessageProcessing(listeners);
 
+        EventListener connectListener = new ConnectListener();
+        EventListener closeListener = new CloseListener(userRegistry);
+        EventListener errorListener = new ErrorListener();
+
+        // TODO: Check if web socket sends header. If so, the login is no longer necessary.
+
         javalin.ws("/ws", ws -> {
-            ws.onConnect(ctx -> {
-                // Ignored.
-                System.out.println("Connected");
-            });
+            ws.onConnect(connectListener::handle);
             ws.onMessage(messageProcessing);
-            ws.onClose(ctx -> {
-                System.out.println("Closed");
-            });
-            ws.onError(ctx -> {
-                // TODO: Error, what to do now?
-                System.out.println("Error!?");
-            });
+            ws.onClose(closeListener::handle);
+            ws.onError(errorListener::handle);
         }, roles(UserRole.ANYONE));
 
         // Run instance

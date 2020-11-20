@@ -1,5 +1,7 @@
 package de.paul2708.server.user;
 
+import io.javalin.websocket.WsContext;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,6 +20,12 @@ public class UserRegistry {
 
     public Optional<User> findUser(UUID uid) {
         return users.containsKey(uid) ? Optional.of(users.get(uid)) : Optional.empty();
+    }
+
+    public Optional<User> findUser(WsContext socket) {
+        return users.values().stream()
+                .filter(user -> user.hasSameSocket(socket))
+                .findAny();
     }
 
     public UUID register(User user) {
