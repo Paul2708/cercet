@@ -26,6 +26,10 @@ public class User {
         this.role = role;
     }
 
+    public boolean hasSameSocket(WsContext context) {
+        return socket.getSessionId().equals(context.getSessionId());
+    }
+
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }

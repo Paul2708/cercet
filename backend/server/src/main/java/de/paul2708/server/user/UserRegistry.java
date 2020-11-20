@@ -29,6 +29,10 @@ public class UserRegistry {
         return uuid;
     }
 
+    public void unregister(UUID uuid) {
+        users.remove(uuid);
+    }
+
     public List<User> findAllStudents() {
         return users.values().stream()
                 .filter(user -> user.getRole() == UserRole.STUDENT)
