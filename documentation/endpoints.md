@@ -49,15 +49,17 @@ The code execution will output any messages to the web socket that logged in (cf
 [
   {
     "uuid": "a0d5c36c-bb1f-4e3b-9ba3-b9dddd9e07f5",
+    "name": "Max Mustermann",
     "role": "{STUDENT | TEACHER}"
   },
   {
     "uuid": "a0d5c36c-bb1f-4e3b-9ba3-b9d4f59e07f5",
+    "name": "Joe",
     "role": "{STUDENT | TEACHER}"
   }
 ]
 ```
-Array of students including uuid and role.
+Array of users including uuid, role and name.
 
 - the `UID` has to refer to a teacher, otherwise `401 Unauthorized`
 

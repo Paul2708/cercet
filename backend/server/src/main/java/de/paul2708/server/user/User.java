@@ -42,6 +42,10 @@ public class User {
         return uuid;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public UserRole getRole() {
         return role;
     }

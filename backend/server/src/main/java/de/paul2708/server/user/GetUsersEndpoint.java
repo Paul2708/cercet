@@ -14,6 +14,6 @@ public class GetUsersEndpoint implements Handler {
 
     @Override
     public void handle(@NotNull Context ctx) {
-        ctx.json(userRegistry.findAllStudents());
+        ctx.json(userRegistry.findAllUsers());
     }
 }

@@ -33,9 +33,7 @@ public class UserRegistry {
         users.remove(uuid);
     }
 
-    public List<User> findAllStudents() {
-        return users.values().stream()
-                .filter(user -> user.getRole() == UserRole.STUDENT)
-                .collect(Collectors.toList());
+    public List<User> findAllUsers() {
+        return new ArrayList<>(users.values());
     }
 }
