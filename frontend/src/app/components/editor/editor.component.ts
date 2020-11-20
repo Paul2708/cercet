@@ -24,6 +24,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   @Input() showTemplateButton = false;
   @Input() showSetTemplateButton = false;
   @Input() showResetButton = true;
+  @Input() studentUID: string;
   @Output() copyCode = new EventEmitter();
   @Output() codeChange = new EventEmitter();
   @Output() templateButtonClick = new EventEmitter();
@@ -90,7 +91,11 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
     const patch = createPatch('Main.java', this.oldCode, this.code);
     this.oldCode = this.code;
-    this.backendService.sendPatch(patch);
+    if (this.studentUID) {
+      this.backendService.sendPatchForStudent(this.studentUID, patch);
+    } else {
+      this.backendService.sendPatch(patch);
+    }
   }
 
   async runCode(): Promise<void> {

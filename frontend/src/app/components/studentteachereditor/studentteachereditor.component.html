@@ -1,3 +1,3 @@
 <div class="container">
-  <app-editor [(code)]="student.code" (copyCode)="copyCode($event)" sendPatches="true" enableRun="false" showCopyButton="true"></app-editor>
+  <app-editor [studentUID]="student.uuid" [(code)]="student.code" (copyCode)="copyCode($event)" enableRun="false" showCopyButton="true"></app-editor>
 </div>

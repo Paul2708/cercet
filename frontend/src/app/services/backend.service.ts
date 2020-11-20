@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
+import {Student} from '../interfaces/student';
 
 @Injectable({
   providedIn: 'root'
@@ -82,7 +83,19 @@ export class BackendService {
 
   sendPatch(patch: string): void {
     const data = {
-      name: this.getUsername(),
+      uuid: this.uuid,
+      patch
+    };
+    if (!this.socket) {
+      return;
+    }
+    this.socket.send(JSON.stringify(data));
+  }
+
+  sendPatchForStudent(uuid: string, patch: string): void {
+    const data = {
+      uuid: this.uuid,
+      for: uuid,
       patch
     };
     if (!this.socket) {

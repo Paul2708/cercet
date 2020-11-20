@@ -20,7 +20,8 @@ export class TeacherComponent implements OnInit {
         '  public static void main(String[] args) {\n' +
         '    System.out.println("Hello World!");\n' +
         '  }\n' +
-        '}'
+        '}',
+      uuid: 'asdf'
     }
   ];
   code = '';
