@@ -36,4 +36,6 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - run: yarn install
+        working-directory: frontend
       - run: yarn build --prod
+        working-directory: frontend
