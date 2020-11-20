@@ -23,6 +23,7 @@ export class TeacherComponent implements OnInit {
         '}'
     }
   ];
+  code = '';
 
   constructor(private bottomSheet: MatBottomSheet, private backendService: BackendService, private router: Router) {
   }
@@ -34,6 +35,10 @@ export class TeacherComponent implements OnInit {
     this.bottomSheet.open(StudentteachereditorComponent, {
       panelClass: 'custom-size',
       data: student
+    }).afterDismissed().subscribe(code => {
+      if (code) {
+        this.code = code;
+      }
     });
   }
 

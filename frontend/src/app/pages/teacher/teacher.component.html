@@ -10,4 +10,4 @@
     </mat-card-content>
   </mat-card>
 </div>
-<app-editor sendPatches="false" showTemplateButton="true" (templateButtonClick)="openTemplateEditor()"></app-editor>
+<app-editor [(code)]="code" sendPatches="false" showTemplateButton="true" (templateButtonClick)="openTemplateEditor()"></app-editor>
