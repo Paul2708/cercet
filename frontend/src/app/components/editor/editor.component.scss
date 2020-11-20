@@ -16,6 +16,7 @@
 .terminal {
   text-align: initial;
   margin: 20px;
+  height: 100%;
 
   span {
     margin: 10px;
@@ -25,6 +26,7 @@
 .terminal-content {
   padding-top: 5px;
   padding-left: 40px;
+  height: 90%;
 }
 
 .i-dont-know-how-to-name-this-container {
@@ -34,7 +36,8 @@
 
 .code-out {
   position: relative;
-  overflow-y: auto;
+  overflow: auto;
+  height: 100%;
 }
 
 .code-line {

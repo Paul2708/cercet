@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
+import {Student} from '../interfaces/student';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,6 @@ export class BackendService {
     const socket = new WebSocket(environment.socketUrl);
     socket.onmessage = (event) => {
       if (event.data === 'Login done :D') {
-        this.router.navigateByUrl(this.isStudent ? 'student' : 'teacher');
         return;
       }
       const message: WebSocketMessage = JSON.parse(event.data);
@@ -45,11 +45,12 @@ export class BackendService {
   }
 
   async login(username: string): Promise<void> {
-    this.isStudent = username !== 'Paul Hoger';
     localStorage.setItem(this.usernameKey, username);
-    const {uuid} = await this.httpClient.post(environment.serverUrl + 'login', {
+    const {uuid, role} = await this.httpClient.post(environment.serverUrl + 'login', {
       name: username
     }).toPromise() as any;
+
+    this.isStudent = role === 'STUDENT';
 
     this.uuid = uuid;
     this.socket.send(JSON.stringify({
@@ -77,12 +78,24 @@ export class BackendService {
   }
 
   isTeacher(): boolean {
-    return !!localStorage.getItem('teacher');
+    return !this.isStudent;
   }
 
   sendPatch(patch: string): void {
     const data = {
-      name: this.getUsername(),
+      uuid: this.uuid,
+      patch
+    };
+    if (!this.socket) {
+      return;
+    }
+    this.socket.send(JSON.stringify(data));
+  }
+
+  sendPatchForStudent(uuid: string, patch: string): void {
+    const data = {
+      uuid: this.uuid,
+      for: uuid,
       patch
     };
     if (!this.socket) {
@@ -132,6 +145,18 @@ export class BackendService {
         };
       }
     });
+  }
+
+  async setTemplate(code: string): Promise<boolean> {
+    return await this.httpClient.post(environment.serverUrl + 'template', {
+        template: code
+      },
+      {
+        headers: {
+          'X-UID': this.uuid
+        },
+        responseType: 'text'
+      }).toPromise() === 'alles geklappt';
   }
 }
 
