@@ -41,7 +41,7 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore_keys: |
+          restore-keys: |
             ${{ runner.os }}-modules
 
       - run: yarn install
