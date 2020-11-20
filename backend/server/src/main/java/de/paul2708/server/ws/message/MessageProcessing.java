@@ -1,4 +1,4 @@
-package de.paul2708.server.ws;
+package de.paul2708.server.ws.message;
 
 import com.google.gson.*;
 import io.javalin.websocket.WsMessageContext;

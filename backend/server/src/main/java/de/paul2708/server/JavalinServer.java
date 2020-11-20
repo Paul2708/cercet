@@ -1,6 +1,5 @@
 package de.paul2708.server;
 
-import de.paul2708.execution.executor.java.JavaCodeExecutor;
 import de.paul2708.execution.runner.ExecutionRunner;
 import de.paul2708.server.execution.ExecutionEndpoint;
 import de.paul2708.server.login.LoginMessageListener;
@@ -10,23 +9,19 @@ import de.paul2708.server.template.CreateTemplateEndpoint;
 import de.paul2708.server.template.GetTemplateEndpoint;
 import de.paul2708.server.template.Template;
 import de.paul2708.server.user.GetUsersEndpoint;
-import de.paul2708.server.user.User;
 import de.paul2708.server.user.UserRegistry;
 import de.paul2708.server.user.UserRole;
-import de.paul2708.server.ws.MessageListener;
-import de.paul2708.server.ws.MessageProcessing;
+import de.paul2708.server.ws.message.MessageListener;
+import de.paul2708.server.ws.message.MessageProcessing;
 import de.paul2708.server.ws.event.CloseListener;
 import de.paul2708.server.ws.event.ConnectListener;
 import de.paul2708.server.ws.event.ErrorListener;
 import de.paul2708.server.ws.event.EventListener;
 import io.javalin.Javalin;
-import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.core.JavalinConfig;
 
 import java.util.List;
-import java.util.Optional;
 
-import static de.paul2708.server.user.UserRole.TEACHER;
 import static io.javalin.core.security.SecurityUtil.roles;
 
 public final class JavalinServer {
