@@ -1,9 +1,13 @@
 package de.paul2708.server;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.paul2708.execution.runner.ExecutionRunner;
 import de.paul2708.server.execution.ExecutionEndpoint;
+import de.paul2708.server.gson.ExcludeStrategy;
 import de.paul2708.server.login.LoginMessageListener;
 import de.paul2708.server.login.LoginEndpoint;
+import de.paul2708.server.patch.PatchMessageListener;
 import de.paul2708.server.security.DefaultAccessManager;
 import de.paul2708.server.template.CreateTemplateEndpoint;
 import de.paul2708.server.template.GetTemplateEndpoint;
@@ -20,6 +24,9 @@ import de.paul2708.server.ws.event.ErrorListener;
 import de.paul2708.server.ws.event.EventListener;
 import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
+import io.javalin.plugin.json.JavalinJson;
+import io.javalin.plugin.json.ToJsonMapper;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -38,6 +45,14 @@ public final class JavalinServer {
     }
 
     public void configureAndStart() {
+        // Gson setup
+        Gson gson = new GsonBuilder()
+                .setExclusionStrategies(new ExcludeStrategy())
+                .create();
+        JavalinJson.setToJsonMapper(gson::toJson);
+        JavalinJson.setFromJsonMapper(gson::fromJson);
+
+        // Registry & stuff
         UserRegistry userRegistry = new UserRegistry();
         Broadcaster broadcaster = new Broadcaster(userRegistry);
         Template template = new Template("public class Main {\n  " +
@@ -73,7 +88,8 @@ public final class JavalinServer {
 
         // Websocket endpoints
         List<MessageListener> listeners = List.of(
-                new LoginMessageListener(userRegistry, broadcaster)
+                new LoginMessageListener(userRegistry, broadcaster),
+                new PatchMessageListener(userRegistry, broadcaster)
         );
         MessageProcessing messageProcessing = new MessageProcessing(listeners);
 

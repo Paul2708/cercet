@@ -1,9 +1,6 @@
 package de.paul2708.server.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import de.paul2708.server.gson.Exclude;
 import io.javalin.websocket.WsContext;
 
 import java.util.UUID;
@@ -20,7 +17,7 @@ public class User {
     private final String name;
     private final UserRole role;
 
-    @JsonIgnore
+    @Exclude
     private WsContext socket;
 
     public User(String name, UserRole role) {

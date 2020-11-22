@@ -135,3 +135,28 @@ The socket will receive messages in the following format:
 * `INFO`: additional information like `Compiling..`, `Compiled!` that are part of the process output.
 * `ERROR`: error caused by compiling or execution, e.g. `missing ;` or `divide by zero`
 * `NORMAL`: normal `System.out` output
+
+### Patches
+#### Send patch
+- **message type**: `patch`
+- **data**:
+```json
+{
+  "data": {
+    "patch": "<patch>"
+  }
+}
+```
+- **response**: ignored
+
+`patch` will be applied to the teachers' editor.
+
+#### Apply patch
+Every teacher will receive the following object on every student editor update.
+```json
+{
+  "patch": "<patch>",
+  "uid": "<uid>"
+}
+```
+`patch` is the applicable patch and `uid` refers to the student.
