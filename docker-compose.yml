@@ -1,18 +1,21 @@
 version: '2'
 services:
   proxy:
-    image: traefik
+    image: traefik:v2.3.3
     ports:
-    - 80:80
+    - "80:80"
+    - "8080:8080"
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+    - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    - "./traefik.yml:/traefik.yml:ro"
     container_name: traefik
   backend:
     build: backend
     image: cercet-backend
     labels:
       - "traefik.docker.network=default"
-      - "traefik.backend.rule=Host:dev.nycode.de;Path:/api/"
+      - "traefik.http.routers.backend.rule=Host(`dev.nycode.de`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
       - "traefik.enable=true"
       - "traefik.port=42069"
   frontend:
@@ -20,6 +23,7 @@ services:
     image: cercet-frontend
     labels:
       - "traefik.docker.network=default"
-      - "traefik.frontend.rule=Host:dev.nycode.de"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.routers.nginx.rule=Host(`dev.nycode.de`)"
       - "traefik.enable=true"
       - "traefik.port=80"
