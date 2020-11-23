@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject, OnDestroy, ApplicationRef, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, Inject, OnDestroy, ViewChild, AfterViewInit} from '@angular/core';
 import {MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import {applyPatch} from 'diff';
 import {Subscription} from 'rxjs';
@@ -15,7 +15,8 @@ export class StudentteachereditorComponent implements AfterViewInit, OnDestroy {
   private subscription: Subscription;
   @ViewChild(EditorComponent) private editor: EditorComponent;
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data, private ref: MatBottomSheetRef<TeacherComponent>, private backendService: BackendService) {
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public data, private ref: MatBottomSheetRef<TeacherComponent>,
+              private backendService: BackendService) {
   }
 
   ngAfterViewInit(): void {
