@@ -3,11 +3,12 @@
   Log Out
 </button>
 <div fxLayout="row" fxLayoutAlign="space-between">
-  <mat-card class="card" *ngFor="let student of students">
+  <mat-card class="card" *ngFor="let student of students | async">
     <mat-card-title>{{ student.name }}</mat-card-title>
     <mat-card-content>
       <button class="view-button" (click)="openStudentEditor(student)" mat-raised-button color="primary">View</button>
     </mat-card-content>
   </mat-card>
 </div>
-<app-editor [(code)]="code" sendPatches="false" showTemplateButton="true" (templateButtonClick)="openTemplateEditor()"></app-editor>
+<app-editor [(code)]="code" sendPatches="false" showTemplateButton="true"
+            (templateButtonClick)="openTemplateEditor()"></app-editor>

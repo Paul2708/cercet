@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {Router} from '@angular/router';
+import {applyPatch} from 'diff';
+import {Observable, Subscription} from 'rxjs';
 import {SelectTemplateComponent} from '../../components/select-template/select-template.component';
 import {StudentteachereditorComponent} from '../../components/studentteachereditor/studentteachereditor.component';
 import {Student} from '../../interfaces/student';
@@ -11,31 +13,35 @@ import {BackendService} from '../../services/backend.service';
   templateUrl: './teacher.component.html',
   styleUrls: ['./teacher.component.css']
 })
-export class TeacherComponent implements OnInit {
+export class TeacherComponent implements OnInit, OnDestroy {
 
-  students: Student[] = [
-    {
-      name: 'KEKW',
-      code: 'public class Main {\n' +
-        '  public static void main(String[] args) {\n' +
-        '    System.out.println("Hello World!");\n' +
-        '  }\n' +
-        '}',
-      uuid: 'asdf'
-    }
-  ];
+  students: Observable<Student[]>;
   code = '';
+  private codeChangeSubscription: Subscription;
 
   constructor(private bottomSheet: MatBottomSheet, private backendService: BackendService, private router: Router) {
   }
 
   ngOnInit(): void {
+    this.students = this.backendService.studentListener();
+    this.codeChangeSubscription = this.backendService.studentCodeListener().subscribe(value => {
+      let currentCode = this.backendService.getStudentCode(value.uid);
+      currentCode = applyPatch(currentCode, value.patch);
+      this.backendService.setStudentCode(value.uid, currentCode);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.codeChangeSubscription.unsubscribe();
   }
 
   openStudentEditor(student: Student): void {
     this.bottomSheet.open(StudentteachereditorComponent, {
       panelClass: 'custom-size',
-      data: student
+      data: {
+        uid: student.uuid,
+        code: this.backendService.getStudentCode(student.uuid)
+      }
     }).afterDismissed().subscribe(code => {
       if (code) {
         this.code = code;

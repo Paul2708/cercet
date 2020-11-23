@@ -25,6 +25,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   @Input() showSetTemplateButton = false;
   @Input() showResetButton = true;
   @Input() studentUID: string;
+  @Input() editable = true;
   @Output() copyCode = new EventEmitter();
   @Output() codeChange = new EventEmitter();
   @Output() templateButtonClick = new EventEmitter();
@@ -103,4 +104,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     await this.backendService.execute(this.code);
   }
 
+  updateCode(code: string): void {
+    this.code = code;
+    this.editor.setValue(code);
+  }
 }

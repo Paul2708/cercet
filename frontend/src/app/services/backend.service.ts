@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, BehaviorSubject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Student} from '../interfaces/student';
 
@@ -15,12 +15,19 @@ export class BackendService {
   private socket: WebSocket;
   private uuid: string;
   private readonly outputListener$: Subject<OutputData>;
+  private readonly studentListener$: BehaviorSubject<Student[]>;
+  private readonly studentCodeListener$: Subject<StudentCodeUpdate>;
   private isStudent = true;
+  private currentTemplate: string;
+  private studentCode = new Map<string, string>();
 
   constructor(private httpClient: HttpClient, private router: Router) {
     this.socket = this.initializeWebSocket();
     this.changeListener$ = new Subject<PatchData>();
     this.outputListener$ = new Subject<OutputData>();
+    this.studentListener$ = new BehaviorSubject<Student[]>([]);
+    this.studentCodeListener$ = new Subject<StudentCodeUpdate>();
+    this.studentCodeListener$.subscribe(value => console.log(value));
   }
 
   private initializeWebSocket(): WebSocket {
@@ -34,9 +41,16 @@ export class BackendService {
         if (!environment.production) {
           console.log('Receiving patch!');
         }
-        this.changeListener$.next(message.data);
+        this.changeListener$.next(message.data.patch);
       } else if (message.type && message.output) {
         this.outputListener$.next(message as OutputData);
+      } else if (Array.isArray(message)) {
+        this.studentListener$.next(message);
+      } else if (message.patch && message.uid && this.isStudent === false) {
+        this.studentCodeListener$.next({
+          patch: message.patch,
+          uid: message.uid
+        });
       } else {
         console.log(message);
       }
@@ -83,13 +97,15 @@ export class BackendService {
 
   sendPatch(patch: string): void {
     const data = {
-      uuid: this.uuid,
       patch
     };
     if (!this.socket) {
       return;
     }
-    this.socket.send(JSON.stringify(data));
+    this.socket.send(JSON.stringify({
+      message: 'patch',
+      data
+    }));
   }
 
   sendPatchForStudent(uuid: string, patch: string): void {
@@ -112,6 +128,14 @@ export class BackendService {
     return this.outputListener$;
   }
 
+  studentListener(): Observable<Student[]> {
+    return this.studentListener$;
+  }
+
+  studentCodeListener(): Observable<StudentCodeUpdate> {
+    return this.studentCodeListener$;
+  }
+
   disconnect(): void {
     this.socket.close();
   }
@@ -127,12 +151,18 @@ export class BackendService {
     }).toPromise();
   }
 
+  getCurrentTemplate(): string {
+    return this.currentTemplate;
+  }
+
   async getTemplate(): Promise<string> {
     const {code} = await this.httpClient.get(environment.serverUrl + 'template', {
       headers: {
         'X-UID': this.uuid
-      }
+      },
+      responseType: 'json'
     }).toPromise() as any;
+    this.currentTemplate = code;
     return code;
   }
 
@@ -158,6 +188,19 @@ export class BackendService {
         responseType: 'text'
       }).toPromise() === 'alles geklappt';
   }
+
+  getStudentCode(uid: string): string {
+    const code = this.studentCode.get(uid);
+    if (code) {
+      return code;
+    }
+    this.studentCode.set(uid, this.currentTemplate);
+    return this.currentTemplate;
+  }
+
+  setStudentCode(code: string, uid: string): void {
+    this.studentCode.set(uid, code);
+  }
 }
 
 export interface OutputData {
@@ -166,6 +209,8 @@ export interface OutputData {
 }
 
 export interface WebSocketMessage {
+  uid?: string;
+  patch?: string;
   message: string;
   data: any;
   type?: string;
@@ -175,4 +220,9 @@ export interface WebSocketMessage {
 export interface PatchData {
   name: string;
   patch: string;
+}
+
+export interface StudentCodeUpdate {
+  patch: string;
+  uid: string;
 }

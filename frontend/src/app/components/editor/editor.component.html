@@ -22,7 +22,7 @@
   </div>
   <div class="code" [fxFlex]="enableRun === true ? '60%' : '95%'">
     <ngx-monaco-editor style="height: 100%" class="code-editor" [options]="options"
-                       [(ngModel)]="code" (ngModelChange)="codeChange.emit($event)" (onInit)="initEditor($event)"></ngx-monaco-editor>
+                       [contentEditable]="editable" [(ngModel)]="code" (ngModelChange)="codeChange.emit($event)" (onInit)="initEditor($event)"></ngx-monaco-editor>
   </div>
   <div *ngIf="enableRun === true" fxFlex="5%" class="i-dont-know-how-to-name-this-container">
     <button [disabled]="output.length === 0" mat-button color="warn" (click)="clearOutput()">
