@@ -1,0 +1,25 @@
+version: '2'
+services:
+  proxy:
+    image: traefik
+    ports:
+    - 80:80
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    container_name: traefik
+  backend:
+    build: backend
+    image: cercet-backend
+    labels:
+      - "traefik.docker.network=default"
+      - "traefik.backend.rule=Host:dev.nycode.de;Path:/api/"
+      - "traefik.enable=true"
+      - "traefik.port=42069"
+  frontend:
+    build: frontend
+    image: cercet-frontend
+    labels:
+      - "traefik.docker.network=default"
+      - "traefik.frontend.rule=Host:dev.nycode.de"
+      - "traefik.enable=true"
+      - "traefik.port=80"
