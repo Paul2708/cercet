@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . /app
 RUN chmod a+x ./mvnw && ./mvnw clean install
 
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM adoptopenjdk/openjdk11:alpine
 WORKDIR /app
 EXPOSE 42069
 CMD ["java", "-jar", "app.jar"]
