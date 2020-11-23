@@ -1,7 +1,7 @@
 FROM adoptopenjdk/openjdk11:alpine as builder
 
 WORKDIR /app
-COPY . ./app
+COPY . /app
 RUN chmod a+x ./mvnw && ./mvnw clean install
 
 FROM adoptopenjdk/openjdk11:alpine-jre
