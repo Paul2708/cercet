@@ -20,6 +20,7 @@ import {StudentteachereditorComponent} from './components/studentteachereditor/s
 import {LoginComponent} from './pages/login/login.component';
 import {StudentComponent} from './pages/student/student.component';
 import {TeacherComponent} from './pages/teacher/teacher.component';
+import { HomeComponent } from './pages/home/home.component';
 
 const monacoConfig: NgxMonacoEditorConfig = {
   onMonacoLoad: (e) => {
@@ -37,7 +38,8 @@ const monacoConfig: NgxMonacoEditorConfig = {
     TeacherComponent,
     EditorComponent,
     StudentteachereditorComponent,
-    SelectTemplateComponent
+    SelectTemplateComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

@@ -14,6 +14,7 @@ export class StudentComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.username = this.backendService.getUsername();
   }
 
   async logout(): Promise<void> {

@@ -1,0 +1,41 @@
+.container {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -50%);
+}
+
+.login {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+}
+
+.login-icon {
+  margin-right: 10px;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+.github-icon {
+  width: 3rem;
+  height: 3rem;
+}
+
+a {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  color: black;
+  margin: 20px;
+  text-decoration: none;
+  transition: all ease 300ms;
+}
+
+a:hover {
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.7));
+  transform: scale(1.5);
+}

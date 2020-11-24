@@ -4,3 +4,9 @@
   top: 30%;
   transform: translate(-50%, -50%);
 }
+
+.back-button {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}
