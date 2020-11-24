@@ -24,6 +24,8 @@ public final class JavaCodeExecutor extends CodeExecutor {
     private static final String DIR_PATH = "./code/";
     private static final String MAIN_CLASS = "Main";
 
+    private static final int MAX_OUTPUTS = 1000;
+
     private final ExecutorService ioService;
 
     private Process process;
@@ -31,12 +33,16 @@ public final class JavaCodeExecutor extends CodeExecutor {
     private final UUID identifier;
     private Path directory;
 
+    private int outputs;
+
     public JavaCodeExecutor(String code, OutputObserver observer) {
         super(code, observer);
 
         this.ioService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         this.identifier = UUID.randomUUID();
+
+        this.outputs = 0;
     }
 
     @Override
@@ -106,7 +112,13 @@ public final class JavaCodeExecutor extends CodeExecutor {
         ioService.submit(() -> {
             try (Scanner scanner = new Scanner(src)) {
                 while (scanner.hasNextLine()) {
+                    if (outputs > MAX_OUTPUTS) {
+                        getObserver().observeOutput("You reached the maximal amount of outputs.", OutputType.ERROR);
+                        break;
+                    }
+                    
                     consumer.accept(scanner.nextLine());
+                    outputs++;
                 }
             }
         });
