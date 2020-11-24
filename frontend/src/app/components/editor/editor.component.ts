@@ -92,7 +92,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     if (this.code === this.oldCode) {
       return;
     }
-    const patch = createPatch('Main.java', this.oldCode, this.code);
+    const patch = this.code; // createPatch('Main.java', this.oldCode, this.code);
     this.oldCode = this.code;
     if (this.studentUID) {
       this.backendService.sendPatchForStudent(this.studentUID, patch);

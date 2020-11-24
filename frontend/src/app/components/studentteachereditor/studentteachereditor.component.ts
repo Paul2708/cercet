@@ -23,8 +23,8 @@ export class StudentteachereditorComponent implements AfterViewInit, OnDestroy {
     console.log(this.editor);
     this.subscription = this.backendService.studentCodeListener().subscribe(value => {
       if (this.data.uid === value.uid) {
-        let code = this.backendService.getStudentCode(this.data.uid);
-        code = applyPatch(code, value.patch);
+        // let code = this.backendService.getStudentCode(this.data.uid);
+        const code = value.patch;
         this.data.code = code;
         this.editor.updateCode(code);
       }
