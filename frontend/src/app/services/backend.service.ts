@@ -55,6 +55,10 @@ export class BackendService {
         console.log(message);
       }
     };
+
+    socket.onclose = () => {
+      console.log('Socket closed');
+    };
     return socket;
   }
 

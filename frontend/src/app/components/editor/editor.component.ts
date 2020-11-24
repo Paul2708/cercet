@@ -70,7 +70,9 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.outputSubscription.unsubscribe();
     }
 
-    this.backendService.disconnect();
+    if (this.enableRun === true) {
+      this.backendService.disconnect();
+    }
   }
 
   clearOutput(): void {
