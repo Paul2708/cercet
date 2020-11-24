@@ -15,6 +15,7 @@ export class BackendService {
   private socket: WebSocket;
   private uuid: string;
   private readonly outputListener$: Subject<OutputData>;
+  private readonly onSocketInit$: Subject<any>;
   private readonly studentListener$: BehaviorSubject<Student[]>;
   private readonly studentCodeListener$: Subject<StudentCodeUpdate>;
   private isStudent = true;
@@ -23,6 +24,7 @@ export class BackendService {
 
   constructor(private httpClient: HttpClient, private router: Router) {
     this.socket = this.initializeWebSocket();
+    this.onSocketInit$ = new Subject();
     this.changeListener$ = new Subject<PatchData>();
     this.outputListener$ = new Subject<OutputData>();
     this.studentListener$ = new BehaviorSubject<Student[]>([]);
@@ -37,6 +39,10 @@ export class BackendService {
         return;
       }
       const message: WebSocketMessage = JSON.parse(event.data);
+      this.onSocketInit$.next({
+        socket,
+        message
+      });
       if (message.message === 'patch') {
         if (!environment.production) {
           console.log('Receiving patch!');
@@ -80,6 +86,10 @@ export class BackendService {
     if (!environment.production) {
       console.log('Logged in with uuid ' + uuid);
     }
+  }
+
+  onSocketInit(): Observable<any> {
+    return this.onSocketInit$;
   }
 
   isLoggedIn(): boolean {
