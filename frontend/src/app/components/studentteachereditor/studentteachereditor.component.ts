@@ -26,7 +26,6 @@ export class StudentteachereditorComponent implements AfterViewInit, OnDestroy {
         let code = this.backendService.getStudentCode(this.data.uid);
         code = applyPatch(code, value.patch);
         this.data.code = code;
-        this.backendService.setStudentCode(code, this.data.uid);
         this.editor.updateCode(code);
       }
     });

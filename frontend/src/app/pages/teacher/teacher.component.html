@@ -2,7 +2,7 @@
   <mat-icon>logout</mat-icon>
   Log Out
 </button>
-<div fxLayout="row" fxLayoutAlign="space-between">
+<div fxLayout="row wrap" fxLayoutGap="20px" class="flex-container">
   <mat-card class="card" *ngFor="let student of students | async">
     <mat-card-title>{{ student.name }}</mat-card-title>
     <mat-card-content>

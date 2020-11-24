@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {Router} from '@angular/router';
 import {applyPatch} from 'diff';
-import {Observable, Subscription} from 'rxjs';
+import {Observable, Subscription, of} from 'rxjs';
 import {SelectTemplateComponent} from '../../components/select-template/select-template.component';
 import {StudentteachereditorComponent} from '../../components/studentteachereditor/studentteachereditor.component';
 import {Student} from '../../interfaces/student';
@@ -27,7 +27,7 @@ export class TeacherComponent implements OnInit, OnDestroy {
     this.codeChangeSubscription = this.backendService.studentCodeListener().subscribe(value => {
       let currentCode = this.backendService.getStudentCode(value.uid);
       currentCode = applyPatch(currentCode, value.patch);
-      this.backendService.setStudentCode(value.uid, currentCode);
+      this.backendService.setStudentCode(currentCode, value.uid);
     });
   }
 

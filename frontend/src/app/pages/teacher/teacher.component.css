@@ -1,7 +1,12 @@
 .card {
   text-align: center;
+  margin: 20px;
   width: 150px;
   height: 150px;
+}
+
+.flex-container {
+  width: 90%;
 }
 
 .view-button {
