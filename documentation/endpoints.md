@@ -160,3 +160,34 @@ Every teacher will receive the following object on every student editor update.
 }
 ```
 `patch` is the applicable patch and `uid` refers to the student.
+
+### Cursor information
+#### Send cursor
+The teacher has to send for every cursor update the following message:
+- **message type**: `cursor`
+- **data**:
+```json
+{
+  "data": {
+    "cursor": "<cursor information>",
+    "student-uid": "<uid>"
+  }
+}
+```
+- **response**: ignored
+
+`cursor information` represent the cursor position.
+The teacher clicks into the view of `student-uid`.
+
+#### Receive cursor
+The student will receive the following data:
+```json
+{
+  "cursor": "<cursor information>",
+  "student-uid": "<uid>",
+  "teacher-uid": "<uid>"
+}
+```
+
+`cursor information` represent the cursor position.
+`teacher-uid` is the teacher that clicks into the editor.

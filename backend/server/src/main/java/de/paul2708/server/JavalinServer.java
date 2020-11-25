@@ -3,6 +3,7 @@ package de.paul2708.server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.paul2708.execution.runner.ExecutionRunner;
+import de.paul2708.server.curser.CursorMessageListener;
 import de.paul2708.server.execution.ExecutionEndpoint;
 import de.paul2708.server.gson.ExcludeStrategy;
 import de.paul2708.server.login.LoginMessageListener;
@@ -89,7 +90,8 @@ public final class JavalinServer {
         // Websocket endpoints
         List<MessageListener> listeners = List.of(
                 new LoginMessageListener(userRegistry, broadcaster),
-                new PatchMessageListener(userRegistry, broadcaster)
+                new PatchMessageListener(userRegistry, broadcaster),
+                new CursorMessageListener(userRegistry)
         );
         MessageProcessing messageProcessing = new MessageProcessing(listeners);
 
