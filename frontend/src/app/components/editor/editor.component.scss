@@ -60,6 +60,11 @@
   }
 }
 
+::ng-deep .cursor {
+  background: rgba(255,0,0,0.49) !important;
+  border: blue 5px !important;
+}
+
 .button {
   margin: 10px;
 }

@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {applyPatch, createPatch} from 'diff';
 import {Subscription} from 'rxjs';
 import {OutputData, BackendService} from '../../services/backend.service';
+import {CursorService} from '../../services/cursor.service';
 import {ThemeService} from '../../services/theme.service';
 import IStandaloneCodeEditor = monaco.editor.IStandaloneCodeEditor;
 
@@ -12,6 +13,12 @@ import IStandaloneCodeEditor = monaco.editor.IStandaloneCodeEditor;
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit, OnDestroy {
+
+  constructor(private backendService: BackendService,
+              private router: Router,
+              private themeService: ThemeService,
+              private cursorService: CursorService) {
+  }
 
   options = {
     theme: this.themeService.isDarkTheme() ? 'vs-dark' : 'vs-light',
@@ -39,9 +46,10 @@ export class EditorComponent implements OnInit, OnDestroy {
   private interval = 200;
   private changeSubscription: Subscription;
   private outputSubscription: Subscription;
+  private selectionSubscription: Subscription;
 
-  constructor(private backendService: BackendService, private router: Router, private themeService: ThemeService) {
-  }
+  private lastSelection: monaco.Selection;
+  private decorations = [];
 
   async ngOnInit(): Promise<void> {
     this.currentTemplate = await this.backendService.getTemplate();
@@ -60,6 +68,34 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.output.push(value);
       console.log('Receiving output!');
     });
+
+    if (!this.studentUID) {
+      this.selectionSubscription = this.cursorService.selectionListener().subscribe(value => {
+        if (value) {
+          /*this.editor.deltaDecorations([], [{
+            options: {
+              className: 'cursor'
+            },
+            range: new monaco.Range(value.startLineNumber, value.startColumn, value.endLineNumber, value.endColumn)
+          }]);*/
+          this.decorations = this.editor.deltaDecorations(this.decorations, [
+            {
+              range: {
+                startColumn: value.startColumn,
+                startLineNumber: value.startLineNumber,
+                endColumn: value.endColumn,
+                endLineNumber: value.endLineNumber
+              },
+              options: {
+                className: 'cursor'
+              }
+            }
+          ]);
+        } else {
+          this.editor.deltaDecorations(this.decorations, []);
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -72,6 +108,9 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     if (this.enableRun === true) {
       this.backendService.disconnect();
+    }
+    if (this.selectionSubscription) {
+      this.selectionSubscription.unsubscribe();
     }
   }
 
@@ -89,6 +128,15 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   private checkDiff(): void {
+    const selection = this.editor.getSelection();
+    // if (selection.startLineNumber === selection.endLineNumber && selection.startColumn === selection.endColumn) {
+    // @ts-ignore
+    // this.cursorService.sendCursor('"noting lol"', this.studentUID);
+    /*} else*/
+    if (this.studentUID && selection !== this.lastSelection) {
+      this.cursorService.sendCursor(selection, this.studentUID);
+      this.lastSelection = selection;
+    }
     if (this.code === this.oldCode) {
       return;
     }

@@ -57,8 +57,6 @@ export class BackendService {
           patch: message.patch,
           uid: message.uid
         });
-      } else {
-        console.log(message);
       }
     };
 
