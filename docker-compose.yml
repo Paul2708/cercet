@@ -12,6 +12,8 @@ services:
   backend:
     build: backend
     image: cercet-backend
+    volumes:
+      - "./config.yaml:/app/config.yaml"
     labels:
       - "traefik.docker.network=default"
       - "traefik.http.routers.backend.rule=Host(`dev.nycode.de`) && PathPrefix(`/api`)"
