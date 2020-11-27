@@ -3,6 +3,7 @@ package de.paul2708.server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.paul2708.execution.runner.ExecutionRunner;
+import de.paul2708.server.config.Configuration;
 import de.paul2708.server.curser.CursorMessageListener;
 import de.paul2708.server.execution.ExecutionEndpoint;
 import de.paul2708.server.gson.ExcludeStrategy;
@@ -53,6 +54,10 @@ public final class JavalinServer {
         JavalinJson.setToJsonMapper(gson::toJson);
         JavalinJson.setFromJsonMapper(gson::fromJson);
 
+        // Load configuration
+        Configuration configuration = new Configuration();
+        configuration.load();
+
         // Registry & stuff
         UserRegistry userRegistry = new UserRegistry();
         Broadcaster broadcaster = new Broadcaster(userRegistry);
@@ -70,7 +75,7 @@ public final class JavalinServer {
 
         // REST endpoints
         javalin.post("/login",
-                new LoginEndpoint(userRegistry),
+                new LoginEndpoint(userRegistry, configuration.getTeacherMapping()),
                 roles(UserRole.ANYONE));
         javalin.post("/execution",
                 new ExecutionEndpoint(new ExecutionRunner()),
