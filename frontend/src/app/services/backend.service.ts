@@ -213,6 +213,15 @@ export class BackendService {
   setStudentCode(code: string, uid: string): void {
     this.studentCode.set(uid, code);
   }
+
+  requestInitialCode(student: string): void {
+    this.socket.send(JSON.stringify({
+      message: 'initial-request',
+      data: {
+        'student-uid': student
+      }
+    }));
+  }
 }
 
 export interface OutputData {

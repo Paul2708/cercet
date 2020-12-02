@@ -20,7 +20,7 @@ export class StudentteachereditorComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.editor);
+    this.backendService.requestInitialCode(this.data.uid);
     this.subscription = this.backendService.studentCodeListener().subscribe(value => {
       if (this.data.uid === value.uid) {
         // let code = this.backendService.getStudentCode(this.data.uid);

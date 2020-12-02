@@ -64,6 +64,13 @@ export class EditorComponent implements OnInit, OnDestroy {
       });
     }
 
+    this.backendService.onSocketInit().subscribe(data => {
+      const {socket, message} = data;
+      if (message.message === 'initial-request') {
+        this.backendService.sendPatch(this.code);
+      }
+    });
+
     this.outputSubscription = this.backendService.outputListener().subscribe(value => {
       this.output.push(value);
       console.log('Receiving output!');
