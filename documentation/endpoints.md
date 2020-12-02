@@ -191,3 +191,25 @@ The student will receive the following data:
 
 `cursor information` represent the cursor position.
 `teacher-uid` is the teacher that clicks into the editor.
+
+### Initial code request
+#### Request
+Should be triggered, if th eteacher clicks "View".
+
+- **message type**: `initial-request`
+- **data**:
+```json
+{
+  "data": {
+    "student-uid": "<uid>"
+  }
+}
+```
+`student-uid` refers to the uid of the clicked student.
+
+Then, the student receives the message:
+
+- **message type**: `initial-request`
+- **data**: doesn't exist
+
+If the student receives this message, he has to [send the current editor](#Send-patch) as patch.

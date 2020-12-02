@@ -9,6 +9,8 @@ import de.paul2708.server.execution.ExecutionEndpoint;
 import de.paul2708.server.gson.ExcludeStrategy;
 import de.paul2708.server.login.LoginMessageListener;
 import de.paul2708.server.login.LoginEndpoint;
+import de.paul2708.server.patch.CodeRequestMessageListener;
+import de.paul2708.server.patch.InitialRequestMessage;
 import de.paul2708.server.patch.PatchMessageListener;
 import de.paul2708.server.security.DefaultAccessManager;
 import de.paul2708.server.template.CreateTemplateEndpoint;
@@ -96,7 +98,8 @@ public final class JavalinServer {
         List<MessageListener> listeners = List.of(
                 new LoginMessageListener(userRegistry, broadcaster),
                 new PatchMessageListener(userRegistry, broadcaster),
-                new CursorMessageListener(userRegistry)
+                new CursorMessageListener(userRegistry),
+                new CodeRequestMessageListener(userRegistry)
         );
         MessageProcessing messageProcessing = new MessageProcessing(listeners);
 
