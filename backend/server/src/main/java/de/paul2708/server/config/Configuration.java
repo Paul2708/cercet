@@ -18,7 +18,8 @@ public final class Configuration {
     public void load() {
         Yaml yaml = new Yaml();
 
-        if (Files.notExists(Paths.get(PATH))) {
+        var path = Paths.get(PATH);
+        if (Files.notExists(path) || Files.isDirectory(path) || !Files.isReadable(path)) {
             System.out.println("Using default configuration");
 
             try (InputStream stream = getClass().getClassLoader().getResourceAsStream("config.yaml")) {
