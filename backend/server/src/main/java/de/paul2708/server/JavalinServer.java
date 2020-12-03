@@ -7,10 +7,10 @@ import de.paul2708.server.config.Configuration;
 import de.paul2708.server.curser.CursorMessageListener;
 import de.paul2708.server.execution.ExecutionEndpoint;
 import de.paul2708.server.gson.ExcludeStrategy;
-import de.paul2708.server.login.LoginMessageListener;
+import de.paul2708.server.heartbeat.HeartbeatBroadcast;
 import de.paul2708.server.login.LoginEndpoint;
+import de.paul2708.server.login.LoginMessageListener;
 import de.paul2708.server.patch.CodeRequestMessageListener;
-import de.paul2708.server.patch.InitialRequestMessage;
 import de.paul2708.server.patch.PatchMessageListener;
 import de.paul2708.server.security.DefaultAccessManager;
 import de.paul2708.server.template.CreateTemplateEndpoint;
@@ -20,19 +20,18 @@ import de.paul2708.server.user.GetUsersEndpoint;
 import de.paul2708.server.user.UserRegistry;
 import de.paul2708.server.user.UserRole;
 import de.paul2708.server.ws.Broadcaster;
-import de.paul2708.server.ws.message.MessageListener;
-import de.paul2708.server.ws.message.MessageProcessing;
 import de.paul2708.server.ws.event.CloseListener;
 import de.paul2708.server.ws.event.ConnectListener;
 import de.paul2708.server.ws.event.ErrorListener;
 import de.paul2708.server.ws.event.EventListener;
+import de.paul2708.server.ws.message.MessageListener;
+import de.paul2708.server.ws.message.MessageProcessing;
 import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
 import io.javalin.plugin.json.JavalinJson;
-import io.javalin.plugin.json.ToJsonMapper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static io.javalin.core.security.SecurityUtil.roles;
 
@@ -115,6 +114,10 @@ public final class JavalinServer {
             ws.onClose(closeListener::handle);
             ws.onError(errorListener::handle);
         }, roles(UserRole.ANYONE));
+
+        // Run heartbeat broadcaster
+        HeartbeatBroadcast heartbeatBroadcast = new HeartbeatBroadcast(broadcaster, TimeUnit.MINUTES, 1);
+        heartbeatBroadcast.start();
 
         // Run instance
         javalin.start(42069);

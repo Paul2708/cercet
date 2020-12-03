@@ -24,6 +24,10 @@ public class Broadcaster {
         broadcastTo(object, user -> user.getRole() == UserRole.STUDENT);
     }
 
+    public void broadcastToEveryone(Object object) {
+        broadcastTo(object, user -> true);
+    }
+
     public void broadcastTo(Object object, Predicate<User> predicate) {
         registry.findAllUsers().stream()
                 .filter(predicate)
