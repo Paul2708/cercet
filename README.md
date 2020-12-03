@@ -1,3 +1,4 @@
+
 # cercet ![CI](https://github.com/Paul2708/cercet/workflows/CI/badge.svg)
 
 The Collaborative Educational Remote Code Execution and Teaching (CERCET) tool is a website that allows teachers to have a look at their students.
@@ -15,6 +16,12 @@ If you are interested, you may have a look at the ["documentation"](./documentat
 ## Current state
 At the moment, CERCET is WIP.
 However, the current state is a minimal valuable product.
+
+**Important note:** 
+Cercet is currently missing some security related features. The following things need to be considered while running:
+
+ - The Java code execution is not restricted by any means. There is no security manager implemented yet. 
+    For example, users can execute a command (by Java Runtime exec function) to shut down the Docker container.  Therefore keep an eye on who gets access to the application.
 
 ## Run it
 1. Clone the repository by `git clone https://github.com/Paul2708/cercet.git`
