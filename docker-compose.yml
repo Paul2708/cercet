@@ -16,7 +16,7 @@ services:
       - "./config.yaml:/app/config.yaml"
     labels:
       - "traefik.docker.network=default"
-      - "traefik.http.routers.backend.rule=Host(`dev.nycode.de`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.rule=Host(`${DOMAIN_NAME}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.middlewares=backend-stripprefix"
       - "traefik.http.middlewares.backend-stripprefix.stripprefix.prefixes=/api"
       - "traefik.http.routers.whoami.entrypoints=web"
@@ -28,6 +28,6 @@ services:
     labels:
       - "traefik.docker.network=default"
       - "traefik.http.routers.nginx.entrypoints=web"
-      - "traefik.http.routers.nginx.rule=Host(`dev.nycode.de`)"
+      - "traefik.http.routers.nginx.rule=Host(`${DOMAIN_NAME}`)"
       - "traefik.enable=true"
       - "traefik.port=80"

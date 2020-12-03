@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  socketUrl: 'ws://dev.nycode.de/api/ws',
-  serverUrl: 'http://dev.nycode.de/api/'
+  socketUrl: 'ws://${DOMAIN_NAME}/api/ws',
+  serverUrl: 'http://${DOMAIN_NAME}/api/'
 
 };
