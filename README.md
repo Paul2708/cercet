@@ -18,15 +18,17 @@ At the moment, CERCET is WIP.
 However, the current state is a minimal valuable product.
 
 **Important note:** 
-Cercet is currently missing some security related features. The following things need to be considered while running:
+Cercet is currently missing some security related features.
+The following things need to be considered while running:
 
  - The Java code execution is not restricted by any means. There is no security manager implemented yet. 
-    For example, users can execute a command (by Java Runtime exec function) to shut down the Docker container.  Therefore keep an eye on who gets access to the application.
+ - For example, users can execute a command (by Java Runtime exec function) to shut down the Docker container.  Therefore keep an eye on who gets access to the application.
 
 ## Run it
-1. Clone the repository by `git clone https://github.com/Paul2708/cercet.git`
-2. Edit `docker-compose.yml` and `frontend/src/environments/environment.prod.ts/`by replacing `dev.nycode.de` with your domain.
-3. Run `docker-compose up`
+1. Clone the repository by `git clone https://github.com/Paul2708/cercet.git`.
+2. Edit `.env` and place your domain there.
+3. Copy [config.yaml](backend/server/src/main/resources/config.yaml) into the project root directory and edit the tokens.
+4. Run `docker-compose up`.
 
 ## Contribute
 If you want to contribute, just hit me up on Discord (Paul2708#1098) or open an issue for discussion.
