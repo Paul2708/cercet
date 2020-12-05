@@ -4,15 +4,18 @@ import com.google.gson.*;
 import io.javalin.websocket.WsMessageContext;
 import io.javalin.websocket.WsMessageHandler;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 public class MessageProcessing implements WsMessageHandler {
 
     private final List<MessageListener> listeners;
+    private final Logger logger;
 
-    public MessageProcessing(List<MessageListener> listeners) {
+    public MessageProcessing(List<MessageListener> listeners, Logger logger) {
         this.listeners = listeners;
+        this.logger = logger;
     }
 
     @Override
@@ -28,12 +31,10 @@ public class MessageProcessing implements WsMessageHandler {
                         listener.handle(ctx, message.getAsJsonObject("data"));
                     }
                 }
-            } else {
-                System.out.println("Message missing");
             }
         } catch (JsonParseException e) {
             // Invalid message
-            System.out.println("Invalid message");
+            logger.error("Received invalid message.");
         }
     }
 }

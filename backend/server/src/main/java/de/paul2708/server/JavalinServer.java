@@ -96,15 +96,15 @@ public final class JavalinServer {
                 roles(UserRole.TEACHER));
 
         // Websocket endpoints
+        Logger logger = LoggerFactory.getLogger("WS-Listener");
+
         List<MessageListener> listeners = List.of(
                 new LoginMessageListener(userRegistry, broadcaster),
                 new PatchMessageListener(userRegistry, broadcaster),
                 new CursorMessageListener(userRegistry),
                 new CodeRequestMessageListener(userRegistry)
         );
-        MessageProcessing messageProcessing = new MessageProcessing(listeners);
-
-        Logger logger = LoggerFactory.getLogger("WS-Listener");
+        MessageProcessing messageProcessing = new MessageProcessing(listeners, logger);
 
         EventListener connectListener = new ConnectListener();
         EventListener closeListener = new CloseListener(userRegistry, broadcaster, logger);
