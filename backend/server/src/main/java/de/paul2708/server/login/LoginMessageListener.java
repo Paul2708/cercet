@@ -6,6 +6,7 @@ import de.paul2708.server.user.UserRegistry;
 import de.paul2708.server.ws.Broadcaster;
 import de.paul2708.server.ws.message.MessageListener;
 import io.javalin.websocket.WsContext;
+import org.slf4j.Logger;
 
 import java.util.UUID;
 
@@ -18,10 +19,12 @@ public class LoginMessageListener implements MessageListener {
 
     private final UserRegistry userRegistry;
     private final Broadcaster broadcaster;
+    private final Logger logger;
 
-    public LoginMessageListener(UserRegistry userRegistry, Broadcaster broadcaster) {
+    public LoginMessageListener(UserRegistry userRegistry, Broadcaster broadcaster, Logger logger) {
         this.userRegistry = userRegistry;
         this.broadcaster = broadcaster;
+        this.logger = logger;
     }
 
     @Override
@@ -36,6 +39,8 @@ public class LoginMessageListener implements MessageListener {
 
         user.setSocket(ctx);
         ctx.send("Login done :D");
+
+        logger.info(String.format("Socket mapped to %s", user.getName()));
 
         // Broadcast users
         broadcaster.broadcastToTeacher(userRegistry.findAllStudents());

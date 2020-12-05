@@ -77,8 +77,10 @@ public final class JavalinServer {
         });
 
         // REST endpoints
+        Logger restLogger = LoggerFactory.getLogger("REST");
+
         javalin.post("/login",
-                new LoginEndpoint(userRegistry, configuration.getTeacherMapping()),
+                new LoginEndpoint(userRegistry, configuration.getTeacherMapping(), restLogger),
                 roles(UserRole.ANYONE));
         javalin.post("/execution",
                 new ExecutionEndpoint(new ExecutionRunner()),
@@ -99,7 +101,7 @@ public final class JavalinServer {
         Logger logger = LoggerFactory.getLogger("WS-Listener");
 
         List<MessageListener> listeners = List.of(
-                new LoginMessageListener(userRegistry, broadcaster),
+                new LoginMessageListener(userRegistry, broadcaster, logger),
                 new PatchMessageListener(userRegistry, broadcaster),
                 new CursorMessageListener(userRegistry),
                 new CodeRequestMessageListener(userRegistry)
