@@ -8,13 +8,16 @@ import de.paul2708.server.user.User;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 public final class ExecutionEndpoint implements Handler {
 
     private final ExecutionRunner runner;
+    private final Logger logger;
 
-    public ExecutionEndpoint(ExecutionRunner runner) {
+    public ExecutionEndpoint(ExecutionRunner runner, Logger logger) {
         this.runner = runner;
+        this.logger = logger;
     }
 
     @Override
@@ -25,6 +28,8 @@ public final class ExecutionEndpoint implements Handler {
 
         CodeExecutor executor = new JavaCodeExecutor(request.getCode(), new WebSocketOutputObserver(user.getSocket()));
         runner.run(executor);
+
+        logger.info(String.format("%s is executing code.", user.getName()));
 
         ctx.status(201).result("Alles top");
     }

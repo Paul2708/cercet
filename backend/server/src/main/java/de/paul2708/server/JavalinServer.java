@@ -83,7 +83,7 @@ public final class JavalinServer {
                 new LoginEndpoint(userRegistry, configuration.getTeacherMapping(), restLogger),
                 roles(UserRole.ANYONE));
         javalin.post("/execution",
-                new ExecutionEndpoint(new ExecutionRunner()),
+                new ExecutionEndpoint(new ExecutionRunner(), restLogger),
                 roles(UserRole.STUDENT));
 
         javalin.get("/template",
