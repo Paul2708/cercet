@@ -1,12 +1,11 @@
 package de.paul2708.server.ws.event;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import de.paul2708.server.user.User;
 import de.paul2708.server.user.UserRegistry;
 import de.paul2708.server.ws.Broadcaster;
+import io.javalin.websocket.WsCloseContext;
 import io.javalin.websocket.WsContext;
+import org.slf4j.Logger;
 
 import java.util.Optional;
 
@@ -14,27 +13,30 @@ public class CloseListener implements EventListener {
 
     private final UserRegistry userRegistry;
     private final Broadcaster broadcaster;
+    private final Logger logger;
 
-    public CloseListener(UserRegistry userRegistry, Broadcaster broadcaster) {
+    public CloseListener(UserRegistry userRegistry, Broadcaster broadcaster, Logger logger) {
         this.userRegistry = userRegistry;
         this.broadcaster = broadcaster;
+        this.logger = logger;
     }
 
     @Override
     public void handle(WsContext context) throws Exception {
+        WsCloseContext closeContext = (WsCloseContext) context;
+
         Optional<User> userOpt = userRegistry.findUser(context);
 
         if (userOpt.isPresent()) {
             User user = userOpt.get();
 
-            System.out.println(user.getName() + " closed connection.");
-
             userRegistry.unregister(user.getUuid());
+
+            logger.info(String.format("%s closed connection. (status=%d, reason=%s)",
+                    user.getName(), closeContext.status(), closeContext.reason()));
 
             // Broadcast users
             broadcaster.broadcastToTeacher(userRegistry.findAllStudents());
-        } else {
-            System.out.println("Anonymous socket closed connection.");
         }
     }
 }

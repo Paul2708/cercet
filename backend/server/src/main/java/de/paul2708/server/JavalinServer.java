@@ -29,6 +29,7 @@ import de.paul2708.server.ws.message.MessageProcessing;
 import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
 import io.javalin.plugin.json.JavalinJson;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -103,8 +104,9 @@ public final class JavalinServer {
         MessageProcessing messageProcessing = new MessageProcessing(listeners);
 
         EventListener connectListener = new ConnectListener();
-        EventListener closeListener = new CloseListener(userRegistry, broadcaster);
-        EventListener errorListener = new ErrorListener();
+        EventListener closeListener = new CloseListener(userRegistry, broadcaster,
+                LoggerFactory.getLogger("WS-Listener"));
+        EventListener errorListener = new ErrorListener(userRegistry);
 
         // TODO: Check if web socket sends header. If so, the login is no longer necessary.
 
