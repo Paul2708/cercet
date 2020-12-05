@@ -30,6 +30,10 @@ public class User {
     }
 
     public boolean hasSameSocket(WsContext context) {
+        if (context == null || socket == null) {
+            return false;
+        }
+
         return socket.getSessionId().equals(context.getSessionId());
     }
 
