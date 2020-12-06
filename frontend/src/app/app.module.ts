@@ -21,7 +21,6 @@ import {LoginComponent} from './pages/login/login.component';
 import {StudentComponent} from './pages/student/student.component';
 import {TeacherComponent} from './pages/teacher/teacher.component';
 import { HomeComponent } from './pages/home/home.component';
-import {environment} from "../environments/environment.prod";
 
 const monacoConfig: NgxMonacoEditorConfig = {
   onMonacoLoad: (e) => {
@@ -56,10 +55,6 @@ const monacoConfig: NgxMonacoEditorConfig = {
     MatBottomSheetModule,
     MonacoEditorModule.forRoot(monacoConfig),
     HttpClientModule
-  ],
-  providers: [
-    { provide: 'DOMAIN_NAME', useValue: environment.socketUrl },
-    { provide: 'DOMAIN_NAME', useValue: environment.serverUrl }
   ],
   bootstrap: [AppComponent]
 })

@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  socketUrl: 'ws://${DOMAIN_NAME}/api/ws',
-  serverUrl: 'http://${DOMAIN_NAME}/api/'
+  socketUrl: 'ws://de.paul2708.de/api/ws',
+  serverUrl: 'http://de.paul2708.de/api/'
 
 };

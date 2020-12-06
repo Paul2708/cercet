@@ -26,11 +26,9 @@ The following things need to be considered while running:
 
 ## Run it
 1. Clone the repository by `git clone https://github.com/Paul2708/cercet.git`.
-2. Edit `.env` and place your domain there.
+2. Edit `docker-compose.yml` and `frontend/src/environments/environment.prod.ts/` by replacing `cercet.paul2708.de` with your domain.
 3. Copy [config.yaml](backend/server/src/main/resources/config.yaml) into the project root directory and edit the tokens.
 4. Run `docker-compose up`.
 
 ## Contribute
 If you want to contribute, just hit me up on Discord (Paul2708#1098) or open an issue for discussion.
-
-> :heart:
