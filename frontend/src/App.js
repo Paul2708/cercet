@@ -10,6 +10,8 @@ import {useEffect, useRef, useState} from "react";
 function App() {
 
     const [isAuthenticated, setAuthenticated] = useState(false);
+    const [uid, setUID] = useState(null);
+    const [role, setRole] = useState('STUDENT');
     const socket = useRef(null);
 
     useEffect(() => {
@@ -26,8 +28,7 @@ function App() {
         if (!socket.current) return;
 
         socket.current.onmessage = event => {
-            const message = JSON.parse(event.data);
-            console.log(message);
+            console.log(event.data);
         };
     });
 
@@ -35,7 +36,8 @@ function App() {
         <Router>
             <Switch>
                 <Route path="/login">
-                    <Login isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated}/>
+                    <Login isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} socket={socket}
+                           uid={uid} setUID={setUID} role={role} setRole={setRole}/>
                 </Route>
             </Switch>
         </Router>

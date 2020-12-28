@@ -5,14 +5,39 @@ import {useState} from "react";
 
 export default function Login(props) {
     const [name, setName] = useState("");
+    const {isAuthenticated, setAuthenticated, role, setRole, setUID, uid} = props;
 
-    if (props.isAuthenticated) {
+    const socket = props.socket.current;
+
+    if (isAuthenticated) {
         return <Redirect to="/"/>;
     }
 
-    function login(event) {
+    async function login(event) {
         event.preventDefault();
-        props.setAuthenticated(true);
+
+        fetch(`/api/login`,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: name
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const {uuid, role} = data;
+
+                socket.send(JSON.stringify({
+                    message: "login",
+                    data: {
+                        uid: uuid
+                    }
+                }));
+                setUID(uuid);
+                setRole(role);
+                setAuthenticated(true);
+            });
     }
 
     return (
