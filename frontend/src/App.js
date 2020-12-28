@@ -28,7 +28,9 @@ function App() {
         if (!socket.current) return;
 
         socket.current.onmessage = event => {
-            console.log(event.data);
+            if (event.data === 'Login done :D') {
+                setAuthenticated(true);
+            }
         };
     });
 
@@ -37,7 +39,7 @@ function App() {
             <Switch>
                 <Route path="/login">
                     <Login isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} socket={socket}
-                           uid={uid} setUID={setUID} role={role} setRole={setRole}/>
+                           setUID={setUID} setRole={setRole}/>
                 </Route>
             </Switch>
         </Router>

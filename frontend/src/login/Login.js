@@ -5,7 +5,7 @@ import {useState} from "react";
 
 export default function Login(props) {
     const [name, setName] = useState("");
-    const {isAuthenticated, setAuthenticated, role, setRole, setUID, uid} = props;
+    const {isAuthenticated, setRole, setUID} = props;
 
     const socket = props.socket.current;
 
@@ -36,7 +36,6 @@ export default function Login(props) {
                 }));
                 setUID(uuid);
                 setRole(role);
-                setAuthenticated(true);
             });
     }
 
