@@ -13,7 +13,9 @@ function App() {
 
     const [isAuthenticated, setAuthenticated] = useState(false);
     const [uid, setUID] = useState(null);
+    const [name, setName] = useState('');
     const [role, setRole] = useState(null);
+    const [logs, setLogs] = useState([]);
     const socket = useRef(null);
 
     useEffect(() => {
@@ -32,6 +34,16 @@ function App() {
         socket.current.onmessage = event => {
             if (event.data === 'Login done :D') {
                 setAuthenticated(true);
+            } else {
+                const message = JSON.parse(event.data);
+
+                // When receiving log output
+                if (message.output && message.type) {
+                    setLogs([...logs, {
+                        type: message.type,
+                        output: message.output
+                    }]);
+                }
             }
         };
     });
@@ -39,7 +51,7 @@ function App() {
     let mainPage;
     switch (role) {
         case "STUDENT":
-            mainPage = (<Student/>);
+            mainPage = (<Student socket={socket.current} name={name} logs={logs} uid={uid}/>);
             break;
         case "TEACHER":
             mainPage = (<Teacher/>)
@@ -53,7 +65,7 @@ function App() {
             <Switch>
                 <Route path="/login">
                     <Login isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} socket={socket}
-                           setUID={setUID} setRole={setRole}/>
+                           setUID={setUID} setRole={setRole} setName={setName}/>
                 </Route>
                 <Route path="/">
                     {mainPage}

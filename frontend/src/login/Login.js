@@ -6,6 +6,7 @@ import {useState} from "react";
 export default function Login(props) {
     const [name, setName] = useState("");
     const {isAuthenticated, setRole, setUID} = props;
+    const setDisplayName = props.setName;
 
     const socket = props.socket.current;
 
@@ -16,7 +17,7 @@ export default function Login(props) {
     async function login(event) {
         event.preventDefault();
 
-        fetch(`/api/login`,
+        fetch(process.env.REACT_APP_BACKEND_URL + `/login`,
             {
                 method: 'POST',
                 body: JSON.stringify({
@@ -36,6 +37,7 @@ export default function Login(props) {
                 }));
                 setUID(uuid);
                 setRole(role);
+                setDisplayName(name);
             });
     }
 
