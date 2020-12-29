@@ -1,9 +1,6 @@
 export default function Logs(props) {
-    const {logs} = props.logs.map(log => {
-        return (<p className={log.type.toLowerCase()}>{log.output}</p>)
-    });
-
+    console.log('Hello World');
     return <div>
-        {logs}
+        {props.logs.map((log, index) => (<p key={index} className={log.type.toLowerCase()}>{log.output}</p>))}
     </div>
 }

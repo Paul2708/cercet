@@ -39,19 +39,34 @@ function App() {
 
                 // When receiving log output
                 if (message.output && message.type) {
-                    setLogs([...logs, {
+                    const newLogs = [...logs];
+                    newLogs.push({
                         type: message.type,
                         output: message.output
-                    }]);
+                    });
+                    setLogs(newLogs);
+                    console.log(newLogs);
                 }
             }
         };
     });
 
+    async function executeCode(code) {
+        await fetch(process.env.REACT_APP_BACKEND_URL + 'execution', {
+            method: 'POST',
+            body: JSON.stringify({
+                code: code
+            }),
+            headers: {
+                'X-UID': uid
+            }
+        });
+    }
+
     let mainPage;
     switch (role) {
         case "STUDENT":
-            mainPage = (<Student socket={socket.current} name={name} logs={logs} uid={uid}/>);
+            mainPage = (<Student socket={socket.current} name={name} logs={logs} uid={uid} executeCode={executeCode}/>);
             break;
         case "TEACHER":
             mainPage = (<Teacher/>)
