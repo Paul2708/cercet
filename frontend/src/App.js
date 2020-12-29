@@ -3,15 +3,17 @@ import Login from "./login/Login";
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route, Redirect
 } from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
+import Student from "./student/Student";
+import Teacher from "./teacher/Teacher";
 
 function App() {
 
     const [isAuthenticated, setAuthenticated] = useState(false);
     const [uid, setUID] = useState(null);
-    const [role, setRole] = useState('STUDENT');
+    const [role, setRole] = useState(null);
     const socket = useRef(null);
 
     useEffect(() => {
@@ -34,12 +36,27 @@ function App() {
         };
     });
 
+    let mainPage;
+    switch (role) {
+        case "STUDENT":
+            mainPage = (<Student/>);
+            break;
+        case "TEACHER":
+            mainPage = (<Teacher/>)
+            break;
+        default:
+            mainPage = (<Redirect to="/login"/>)
+    }
+
     return (
         <Router>
             <Switch>
                 <Route path="/login">
                     <Login isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} socket={socket}
                            setUID={setUID} setRole={setRole}/>
+                </Route>
+                <Route path="/">
+                    {mainPage}
                 </Route>
             </Switch>
         </Router>
