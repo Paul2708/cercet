@@ -1,11 +1,11 @@
 import {useRef} from "react";
 import Editor from "@monaco-editor/react";
-import {Button} from "react-bootstrap";
+import {Button, Container, Row} from "react-bootstrap";
 import './Student.css';
 import Logs from "../components/Logs";
 
 export default function Student(props) {
-    const {logs, socket, uid, executeCode} = props;
+    const {logs, socket, uid, executeCode, clearLogs} = props;
     const editorRef = useRef();
     const timer = useRef();
     const lastCode = useRef();
@@ -39,27 +39,32 @@ export default function Student(props) {
     }
 
     async function runCode() {
+        clearLogs();
         const code = editorRef.current.getValue();
         await executeCode(code);
     }
 
     return (
-        <>
-            <div className="align-items-center">
+        <Container fluid>
+            <Row className="align-items-center">
                 <Button onClick={runCode} variant="primary" className="control-button">
                     Run
                 </Button>
                 <Button onClick={resetToTemplate} variant="danger" className="control-button">
                     Reset to template
                 </Button>
-            </div>
-            <Editor
-                height="90vh"
-                theme='dark'
-                language='java'
-                editorDidMount={handleEditorDidMount}
-                loading={"Loading..."}/>
-            <Logs logs={logs}/>
-        </>
+            </Row>
+            <Row>
+                <Editor
+                    height="75vh"
+                    theme='dark'
+                    language='java'
+                    editorDidMount={handleEditorDidMount}
+                    loading={"Loading..."}/>
+            </Row>
+            <Row>
+                <Logs logs={logs}/>
+            </Row>
+        </Container>
     );
 }

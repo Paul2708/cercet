@@ -1,0 +1,8 @@
+.logs-container {
+    height: 20vh;
+    overflow: auto;
+}
+
+.log-message {
+    display: block;
+}

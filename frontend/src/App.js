@@ -63,10 +63,15 @@ function App() {
         });
     }
 
+    function clearLogs() {
+        setLogs([]);
+    }
+
     let mainPage;
     switch (role) {
         case "STUDENT":
-            mainPage = (<Student socket={socket.current} name={name} logs={logs} uid={uid} executeCode={executeCode}/>);
+            mainPage = (<Student clearLogs={clearLogs} socket={socket.current} name={name} logs={logs} uid={uid}
+                                 executeCode={executeCode}/>);
             break;
         case "TEACHER":
             mainPage = (<Teacher/>)
