@@ -1,11 +1,11 @@
-FROM adoptopenjdk/openjdk11:alpine as builder
+FROM eclipse-temurin:17-alpine as builder
 
 WORKDIR /app
 COPY . /app
-RUN chmod a+x ./mvnw && ./mvnw clean install
+RUN ./gradlew installDist
 
-FROM adoptopenjdk/openjdk11:alpine
+FROM eclipse-temurin:17-alpine
 WORKDIR /app
 EXPOSE 42069
-CMD ["java", "-jar", "app.jar"]
-COPY --from=builder /app/server/target/cercet-backend-jar-with-dependencies.jar /app/app.jar
+CMD ["/app/bin/cercet-backend-server"]
+COPY --from=builder /app/server/build/install/cercet-backend-server /app/

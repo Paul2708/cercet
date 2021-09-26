@@ -1,0 +1,17 @@
+plugins {
+    `cercet-module`
+    application
+}
+
+dependencies {
+    implementation("io.javalin:javalin:3.12.0")
+    implementation(project(":cercet-backend-remote-code-execution"))
+    implementation("com.google.code.gson:gson:2.8.6")
+    implementation("org.yaml:snakeyaml:1.27")
+}
+
+description = "cercet-backend-server"
+
+application {
+    mainClass.set("de.paul2708.server.Main")
+}
