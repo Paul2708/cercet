@@ -4,7 +4,7 @@ import de.paul2708.server.user.User;
 import de.paul2708.server.user.UserRegistry;
 import de.paul2708.server.user.UserRole;
 import io.javalin.core.security.AccessManager;
-import io.javalin.core.security.Role;
+import io.javalin.core.security.RouteRole;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +26,7 @@ public final class DefaultAccessManager implements AccessManager {
     }
 
     @Override
-    public void manage(@NotNull Handler handler, @NotNull Context ctx, @NotNull Set<Role> permittedRoles) throws Exception {
+    public void manage(@NotNull Handler handler, @NotNull Context ctx, @NotNull Set<RouteRole> permittedRoles) throws Exception {
         String header = ctx.header(UID_HEADER);
         Optional<UUID> optUUID = parseUUID(header);
 
@@ -45,7 +45,7 @@ public final class DefaultAccessManager implements AccessManager {
         }
     }
 
-    private void denyOrAccept(Handler handler, Context ctx, Set<Role> permittedRoles, UserRole role) throws Exception {
+    private void denyOrAccept(Handler handler, Context ctx, Set<RouteRole> permittedRoles, UserRole role) throws Exception {
         if (role.isPermitted(permittedRoles)) {
             handler.handle(ctx);
         } else {

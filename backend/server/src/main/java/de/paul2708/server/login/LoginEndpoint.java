@@ -25,7 +25,7 @@ public class LoginEndpoint implements Handler {
 
     @Override
     public void handle(@NotNull Context context) {
-        LoginRequest information = context.bodyValidator(LoginRequest.class).getOrNull();
+        LoginRequest information = context.bodyValidator(LoginRequest.class).get();
 
         User user;
         if (teacherMapping.containsKey(information.getName())) {

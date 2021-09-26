@@ -7,6 +7,7 @@ import de.paul2708.server.config.Configuration;
 import de.paul2708.server.curser.CursorMessageListener;
 import de.paul2708.server.execution.ExecutionEndpoint;
 import de.paul2708.server.gson.ExcludeStrategy;
+import de.paul2708.server.gson.GsonJsonMapper;
 import de.paul2708.server.heartbeat.HeartbeatBroadcast;
 import de.paul2708.server.login.LoginEndpoint;
 import de.paul2708.server.login.LoginMessageListener;
@@ -28,34 +29,27 @@ import de.paul2708.server.ws.message.MessageListener;
 import de.paul2708.server.ws.message.MessageProcessing;
 import io.javalin.Javalin;
 import io.javalin.core.JavalinConfig;
-import io.javalin.plugin.json.JavalinJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static io.javalin.core.security.SecurityUtil.roles;
-
 public final class JavalinServer {
 
     private final Javalin javalin;
-
-    private final JavalinConfig config;
+    private JavalinConfig config;
 
     public JavalinServer() {
-        this.javalin = Javalin.create();
-
-        this.config = javalin.config;
+        this.javalin = Javalin.create(config -> {
+            this.config = config;
+        });
     }
 
     public void configureAndStart() {
         // Gson setup
-        Gson gson = new GsonBuilder()
-                .setExclusionStrategies(new ExcludeStrategy())
-                .create();
-        JavalinJson.setToJsonMapper(gson::toJson);
-        JavalinJson.setFromJsonMapper(gson::fromJson);
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeStrategy()).create();
+        config.jsonMapper(new GsonJsonMapper(gson));
 
         // Load configuration
         Configuration configuration = new Configuration();
@@ -64,9 +58,8 @@ public final class JavalinServer {
         // Registry & stuff
         UserRegistry userRegistry = new UserRegistry();
         Broadcaster broadcaster = new Broadcaster(userRegistry);
-        Template template = new Template("public class Main {\n  " +
-                "public static void main(String[] args) {\n    " +
-                "System.out.println(\"Hello World!\");\n  }\n}");
+        Template template =
+                new Template("public class Main {\n  " + "public static void main(String[] args) {\n    " + "System" + ".out.println(\"Hello World!\");\n  }\n}");
 
         // Security
         config.accessManager(new DefaultAccessManager(userRegistry));
@@ -79,33 +72,22 @@ public final class JavalinServer {
         // REST endpoints
         Logger restLogger = LoggerFactory.getLogger("REST");
 
-        javalin.post("/login",
-                new LoginEndpoint(userRegistry, configuration.getTeacherMapping(), restLogger),
-                roles(UserRole.ANYONE));
-        javalin.post("/execution",
-                new ExecutionEndpoint(new ExecutionRunner(), restLogger),
-                roles(UserRole.STUDENT));
+        javalin.post("/login", new LoginEndpoint(userRegistry, configuration.getTeacherMapping(), restLogger),
+                     UserRole.ANYONE);
+        javalin.post("/execution", new ExecutionEndpoint(new ExecutionRunner(), restLogger), UserRole.STUDENT);
 
-        javalin.get("/template",
-                new GetTemplateEndpoint(template),
-                roles(UserRole.STUDENT));
-        javalin.post("/template",
-                new CreateTemplateEndpoint(template),
-                roles(UserRole.TEACHER));
+        javalin.get("/template", new GetTemplateEndpoint(template), UserRole.STUDENT);
+        javalin.post("/template", new CreateTemplateEndpoint(template), UserRole.TEACHER);
 
-        javalin.get("/user",
-                new GetUsersEndpoint(userRegistry),
-                roles(UserRole.TEACHER));
+        javalin.get("/user", new GetUsersEndpoint(userRegistry), UserRole.TEACHER);
 
         // Websocket endpoints
         Logger logger = LoggerFactory.getLogger("WS-Listener");
 
-        List<MessageListener> listeners = List.of(
-                new LoginMessageListener(userRegistry, broadcaster, logger),
-                new PatchMessageListener(userRegistry, broadcaster),
-                new CursorMessageListener(userRegistry),
-                new CodeRequestMessageListener(userRegistry)
-        );
+        List<MessageListener> listeners =
+                List.of(new LoginMessageListener(userRegistry, broadcaster, logger),
+                        new PatchMessageListener(userRegistry, broadcaster), new CursorMessageListener(userRegistry),
+                        new CodeRequestMessageListener(userRegistry));
         MessageProcessing messageProcessing = new MessageProcessing(listeners, logger);
 
         EventListener connectListener = new ConnectListener();
@@ -119,7 +101,7 @@ public final class JavalinServer {
             ws.onMessage(messageProcessing);
             ws.onClose(closeListener::handle);
             ws.onError(errorListener::handle);
-        }, roles(UserRole.ANYONE));
+        }, UserRole.ANYONE);
 
         // Run heartbeat broadcaster
         HeartbeatBroadcast heartbeatBroadcast = new HeartbeatBroadcast(broadcaster, TimeUnit.MINUTES, 1);
