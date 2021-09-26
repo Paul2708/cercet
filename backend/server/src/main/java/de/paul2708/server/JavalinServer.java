@@ -58,8 +58,12 @@ public final class JavalinServer {
         // Registry & stuff
         UserRegistry userRegistry = new UserRegistry();
         Broadcaster broadcaster = new Broadcaster(userRegistry);
-        Template template =
-                new Template("public class Main {\n  " + "public static void main(String[] args) {\n    " + "System" + ".out.println(\"Hello World!\");\n  }\n}");
+        Template template = new Template("""
+                                                 public class Main {
+                                                     public static void main(String[] args) {
+                                                         System.out.println("Hello World!");
+                                                     }
+                                                 }""");
 
         // Security
         config.accessManager(new DefaultAccessManager(userRegistry));
