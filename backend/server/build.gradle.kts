@@ -6,8 +6,8 @@ plugins {
 dependencies {
     implementation("io.javalin:javalin:3.12.0")
     implementation(project(":cercet-backend-remote-code-execution"))
-    implementation("com.google.code.gson:gson:2.8.6")
-    implementation("org.yaml:snakeyaml:1.27")
+    implementation("com.google.code.gson:gson:2.8.8")
+    implementation("org.yaml:snakeyaml:1.29")
 }
 
 description = "cercet-backend-server"
