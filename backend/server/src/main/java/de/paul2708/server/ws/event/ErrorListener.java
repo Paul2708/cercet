@@ -9,15 +9,7 @@ import org.slf4j.Logger;
 
 import java.util.Optional;
 
-public class ErrorListener implements EventListener {
-
-    private final UserRegistry userRegistry;
-    private final Logger logger;
-
-    public ErrorListener(UserRegistry userRegistry, Logger logger) {
-        this.userRegistry = userRegistry;
-        this.logger = logger;
-    }
+public record ErrorListener(UserRegistry userRegistry, Logger logger) implements EventListener {
 
     @Override
     public void handle(WsContext context) throws Exception {

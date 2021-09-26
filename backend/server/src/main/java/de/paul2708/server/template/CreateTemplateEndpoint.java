@@ -9,13 +9,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Paul2708
  */
-public class CreateTemplateEndpoint implements Handler {
-
-    private Template template;
-
-    public CreateTemplateEndpoint(Template template) {
-        this.template = template;
-    }
+public record CreateTemplateEndpoint(Template template) implements Handler {
 
     @Override
     public void handle(@NotNull Context ctx) {

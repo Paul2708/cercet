@@ -9,17 +9,7 @@ import org.slf4j.Logger;
 
 import java.util.Optional;
 
-public class CloseListener implements EventListener {
-
-    private final UserRegistry userRegistry;
-    private final Broadcaster broadcaster;
-    private final Logger logger;
-
-    public CloseListener(UserRegistry userRegistry, Broadcaster broadcaster, Logger logger) {
-        this.userRegistry = userRegistry;
-        this.broadcaster = broadcaster;
-        this.logger = logger;
-    }
+public record CloseListener(UserRegistry userRegistry, Broadcaster broadcaster, Logger logger) implements EventListener {
 
     @Override
     public void handle(WsContext context) throws Exception {
@@ -32,8 +22,7 @@ public class CloseListener implements EventListener {
 
             userRegistry.unregister(user.getUuid());
 
-            logger.info(String.format("%s closed connection. (status=%d, reason=%s)",
-                    user.getName(), closeContext.status(), closeContext.reason()));
+            logger.info(String.format("%s closed connection. (status=%d, reason=%s)", user.getName(), closeContext.status(), closeContext.reason()));
 
             // Broadcast users
             broadcaster.broadcastToTeacher(userRegistry.findAllStudents());

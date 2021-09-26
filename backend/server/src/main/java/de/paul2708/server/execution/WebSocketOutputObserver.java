@@ -4,13 +4,7 @@ import de.paul2708.execution.executor.OutputObserver;
 import de.paul2708.execution.executor.OutputType;
 import io.javalin.websocket.WsContext;
 
-public final class WebSocketOutputObserver implements OutputObserver {
-
-    private final WsContext socket;
-
-    public WebSocketOutputObserver(WsContext socket) {
-        this.socket = socket;
-    }
+public record WebSocketOutputObserver(WsContext socket) implements OutputObserver {
 
     @Override
     public void observeOutput(String output, OutputType type) {

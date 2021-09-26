@@ -6,15 +6,7 @@ import de.paul2708.server.ws.Broadcaster;
 import de.paul2708.server.ws.message.MessageListener;
 import io.javalin.websocket.WsContext;
 
-public class PatchMessageListener implements MessageListener {
-
-    private final UserRegistry userRegistry;
-    private final Broadcaster broadcaster;
-
-    public PatchMessageListener(UserRegistry userRegistry, Broadcaster broadcaster) {
-        this.userRegistry = userRegistry;
-        this.broadcaster = broadcaster;
-    }
+public record PatchMessageListener(UserRegistry userRegistry, Broadcaster broadcaster) implements MessageListener {
 
     @Override
     public String message() {

@@ -11,21 +11,12 @@ import org.slf4j.Logger;
 import java.util.Map;
 import java.util.UUID;
 
-public class LoginEndpoint implements Handler {
-
-    private final UserRegistry userRegistry;
-    private final Map<String, String> teacherMapping;
-    private final Logger logger;
-
-    public LoginEndpoint(UserRegistry userRegistry, Map<String, String> teacherMapping, Logger logger) {
-        this.userRegistry = userRegistry;
-        this.teacherMapping = teacherMapping;
-        this.logger = logger;
-    }
+public record LoginEndpoint(UserRegistry userRegistry, Map<String, String> teacherMapping,
+                            Logger logger) implements Handler {
 
     @Override
     public void handle(@NotNull Context context) {
-        LoginRequest information = context.bodyValidator(LoginRequest.class).getOrNull();
+        LoginRequest information = context.bodyValidator(LoginRequest.class).get();
 
         User user;
         if (teacherMapping.containsKey(information.getName())) {

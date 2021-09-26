@@ -15,17 +15,8 @@ import java.util.UUID;
  *
  * @author Paul2708
  */
-public class LoginMessageListener implements MessageListener {
-
-    private final UserRegistry userRegistry;
-    private final Broadcaster broadcaster;
-    private final Logger logger;
-
-    public LoginMessageListener(UserRegistry userRegistry, Broadcaster broadcaster, Logger logger) {
-        this.userRegistry = userRegistry;
-        this.broadcaster = broadcaster;
-        this.logger = logger;
-    }
+public record LoginMessageListener(UserRegistry userRegistry, Broadcaster broadcaster,
+                                   Logger logger) implements MessageListener {
 
     @Override
     public String message() {

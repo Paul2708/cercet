@@ -8,13 +8,7 @@ import io.javalin.websocket.WsContext;
 
 import java.util.UUID;
 
-public class CodeRequestMessageListener implements MessageListener {
-
-    private final UserRegistry userRegistry;
-
-    public CodeRequestMessageListener(UserRegistry userRegistry) {
-        this.userRegistry = userRegistry;
-    }
+public record CodeRequestMessageListener(UserRegistry userRegistry) implements MessageListener {
 
     @Override
     public String message() {

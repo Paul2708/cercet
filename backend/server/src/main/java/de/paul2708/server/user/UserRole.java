@@ -1,14 +1,12 @@
 package de.paul2708.server.user;
 
-import io.javalin.core.security.Role;
+import io.javalin.core.security.RouteRole;
 
 import java.util.Set;
 
-public enum UserRole implements Role {
+public enum UserRole implements RouteRole {
 
-    ANYONE(),
-    STUDENT(ANYONE),
-    TEACHER(STUDENT);
+    ANYONE(), STUDENT(ANYONE), TEACHER(STUDENT);
 
     private final UserRole[] inheritedRoles;
 
@@ -16,7 +14,7 @@ public enum UserRole implements Role {
         this.inheritedRoles = inheritedRoles;
     }
 
-    public boolean isPermitted(Set<Role> permittedRoles) {
+    public boolean isPermitted(Set<RouteRole> permittedRoles) {
         if (inheritedRoles != null) {
             for (UserRole inheritedRole : inheritedRoles) {
                 if (permittedRoles.contains(inheritedRole)) {
