@@ -51,7 +51,7 @@ public final class JavaCodeExecutor extends CodeExecutor {
         this.directory = Files.createDirectories(Paths.get(DIR_PATH + "/" + identifier + "/"));
 
         Path codeFile = Files.createFile(Paths.get(String.format("%s%s/%s.java", DIR_PATH, identifier, MAIN_CLASS)));
-        Files.write(codeFile, getCode().getBytes(StandardCharsets.UTF_8));
+        Files.writeString(codeFile, getCode());
 
         // Compile
         getObserver().observeOutput("Compiling...", OutputType.INFO);

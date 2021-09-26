@@ -13,17 +13,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-public final class DefaultAccessManager implements AccessManager {
+public record DefaultAccessManager(UserRegistry userRegistry) implements AccessManager {
 
     public static final String UID_HEADER = "X-UID";
 
     public static final String USER_KEY = "user";
-
-    private final UserRegistry userRegistry;
-
-    public DefaultAccessManager(UserRegistry userRegistry) {
-        this.userRegistry = userRegistry;
-    }
 
     @Override
     public void manage(@NotNull Handler handler, @NotNull Context ctx, @NotNull Set<RouteRole> permittedRoles) throws Exception {

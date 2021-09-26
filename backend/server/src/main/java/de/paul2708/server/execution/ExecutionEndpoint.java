@@ -10,15 +10,7 @@ import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-public final class ExecutionEndpoint implements Handler {
-
-    private final ExecutionRunner runner;
-    private final Logger logger;
-
-    public ExecutionEndpoint(ExecutionRunner runner, Logger logger) {
-        this.runner = runner;
-        this.logger = logger;
-    }
+public record ExecutionEndpoint(ExecutionRunner runner, Logger logger) implements Handler {
 
     @Override
     public void handle(@NotNull Context ctx) throws Exception {

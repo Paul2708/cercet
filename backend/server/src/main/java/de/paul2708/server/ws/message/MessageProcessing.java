@@ -8,15 +8,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-public class MessageProcessing implements WsMessageHandler {
-
-    private final List<MessageListener> listeners;
-    private final Logger logger;
-
-    public MessageProcessing(List<MessageListener> listeners, Logger logger) {
-        this.listeners = listeners;
-        this.logger = logger;
-    }
+public record MessageProcessing(List<MessageListener> listeners, Logger logger) implements WsMessageHandler {
 
     @Override
     public void handleMessage(@NotNull WsMessageContext ctx) {
