@@ -8,8 +8,8 @@ They can compile and execute it as well.
 The main capability is that the teachers can observe the students' editors.
 In addition, the students will see the teachers cursors.
 
-At this point, I want to thank [@NyCodeGHG](https://github.com/NyCodeGHG) for his contributions.
-The fast development would not be possible without him. :heart:
+At this point, I want to thank [@NyCodeGHG](https://github.com/NyCodeGHG) for her contributions.
+The fast development would not be possible without her. :heart:
 
 If you are interested, you may have a look at the ["documentation"](./documentation).
 
